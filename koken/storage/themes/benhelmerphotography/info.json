@@ -1,0 +1,23 @@
+{
+	"name": "Ben Helmer Photography",
+	"version": "0.9",
+	"description": "Modified Blueprint, for Ben Helmer Photography.",
+	"demo": "http://koken.me",
+	"author": {
+		"name": "Ben Helmer",
+		"link": "http://koken.me"
+	},
+  "settings": {
+    "Layout": {
+      "icon":"layout",
+      "settings": {
+        "show_tagline": {
+          "label": "Show tagline",
+          "type": "boolean",
+          "value": false
+        }
+      }
+    }
+  },
+	"koken_version_required": "0.5.0"
+}

@@ -1,0 +1,443 @@
+{
+	"routes": {
+
+		"/home/": {
+			"template": "index"
+		},
+
+		"/feed/content/recent.rss": {
+			"template": "contents.rss",
+			"filters": [ "order_by=published_on", "order_direction=desc" ]
+		},
+
+		"/feed/albums/:id/recent.rss": {
+			"template": "album.rss",
+			"filters": [ "order_by=published_on", "order_direction=desc" ]
+		},
+
+		"/feed/essays/recent.rss": {
+			"template": "essays.rss",
+			"filters": [ "order_by=published_on", "order_direction=desc" ]
+		},
+
+		"/feed/timeline/recent.rss": {
+			"template": "timeline.rss"
+		}
+
+	},
+
+	"templates": {
+
+		"index": {
+			"name": "Home",
+			"description": "Displays all featured images and videos",
+			"source": "featured_content"
+		},
+
+		"albums": {
+			"name": "Albums",
+			"description": "Displays all top public albums and sets",
+			"source": "albums"
+		},
+
+		"album": {
+			"name": "Album",
+			"description": "Displays a single album and its content",
+			"source": "album"
+		},
+
+		"album.rss": {
+			"name": "Albums RSS",
+			"description": "Public albums RSS feed",
+			"source": "album"
+		},
+
+		"archive.albums": {
+			"name": "Albums archive",
+			"description": "Displays all public albums sorted by tag, category or date"
+		},
+
+		"sets": {
+			"name": "Sets",
+			"description": "Displays all top public sets",
+			"source": "sets"
+		},
+
+		"set": {
+			"name": "Set",
+			"description": "Displays a single set and its content",
+			"source": "set"
+		},
+
+		"contents": {
+			"name": "Content",
+			"description": "Displays all images and videos sorted by date",
+			"source": "contents"
+		},
+
+		"favorites": {
+			"name": "Favorites",
+			"description": "Displays all favorite images and videos",
+			"source": "favorites"
+		},
+
+		"contents.rss": {
+			"name": "Content RSS",
+			"description": "Content RSS feed",
+			"source": "contents"
+		},
+
+		"archive.contents": {
+			"name": "Content archive",
+			"description": "Displays all public images and videos sorted by tag, category or date"
+		},
+
+		"content": {
+			"name": "Content",
+			"description": "Displays a single photo or video",
+			"source": "content"
+		},
+
+		"essays": {
+			"name": "Essays",
+			"description": "Displays all published essays",
+			"source": "essays"
+		},
+
+		"essays.rss": {
+			"name": "Essays RSS",
+			"description": "Essays RSS feed",
+			"source": "essays"
+		},
+
+		"essay": {
+			"name": "Essay",
+			"description": "Displays a single essay",
+			"source": "essay"
+		},
+
+		"archive.essays": {
+			"name": "Essays archive",
+			"description": "Displays all published essays sorted by tag, category or date"
+		},
+
+		"page": {
+			"name": "Page",
+			"description": "Displays a custom page",
+			"source": "page"
+		},
+
+		"tags": {
+			"name": "Tags",
+			"description": "Display all tags",
+			"source": "tags"
+		},
+
+		"tag": {
+			"name": "Tag detail",
+			"description": "Single tag and its associated content",
+			"source": "tag"
+		},
+
+		"categories": {
+			"name": "Categories",
+			"description": "Display all categories",
+			"source": "categories"
+		},
+
+		"category": {
+			"name": "Category detail",
+			"description": "Single Category and its associated content",
+			"source": "category"
+		},
+
+		"timeline": {
+			"name": "Timeline",
+			"description": "Stream of all essays, albums and content added to your site.",
+			"source": "timeline"
+		},
+
+		"date": {
+			"name": "Timeline archive",
+			"description": "All public activity for a particular year, month or day."
+		},
+
+		"timeline.rss": {
+			"name": "Timeline RSS",
+			"description": "Stream of all essays, albums and content added to your site in RSS form.",
+			"source": "timeline"
+		}
+
+	},
+
+	"language": {
+
+		"en": {
+			"added": "added",
+			"albums": "Albums",
+			"all_content": "All content",
+			"back_to_top": "Back to top",
+			"categories": "Categories",
+			"close_lightbox": "Close lightbox",
+			"content": "Content",
+			"content_from_title": "Content from %s",
+			"download": "Download",
+			"download_image": "Download image",
+			"enter_password": "Enter password",
+			"error": "Error",
+			"essays": "Essays",
+			"essays_from_title": "Essays from %s",
+			"exit_fullscreen": "Exit fullscreen",
+			"favorites": "Favorites",
+			"featured_essays": "Featured essays",
+			"features": "Features",
+			"from_the_album": "From the album",
+			"go": "Go",
+			"hide_caption": "Hide caption",
+			"home": "Home",
+			"item": "item",
+			"items": "items",
+			"latest": "Latest",
+			"loading_more": "Loading more...",
+			"more": "More",
+			"new": "new",
+			"newer": "Newer",
+			"next": "Next",
+			"older": "Older",
+			"of": "of",
+			"on": "on",
+			"open_mobile_menu": "Open mobile menu",
+			"pause": "Pause",
+			"play": "Play",
+			"posted_in": "Posted in",
+			"previous": "Previous",
+			"read_more": "Read more",
+			"read_more_in": "Read more in",
+			"read_more_in_title": "Read more in %s",
+			"read_title": "Read %s",
+			"recent_activity_from_title": "Recent activity from %s",
+			"recent_uploads_from_the_title_album": "Recent uploads from the %s album",
+			"see_more": "See more",
+			"see_more_in": "See more in",
+			"sets": "Sets",
+			"share": "Share",
+			"share_on_": "Share on",
+			"share_this": "Share this",
+			"show_caption": "Show caption",
+			"start_slideshow": "Start slideshow",
+			"stop_slideshow": "Stop slideshow",
+			"tags": "Tags",
+			"this_field_is_required": "This field is required",
+			"timeline": "Timeline",
+			"topic": "Topic",
+			"view": "View",
+			"view_album": "View album",
+			"view_all": "View all",
+			"view_all_albums": "View all albums",
+			"view_all_albums_in": "View all albums in",
+			"view_all_albums_in_title": "View all albums in %s",
+			"view_all_content": "View all content",
+			"view_all_content_in_title": "View all content in %s",
+			"view_all_essays": "View all essays",
+			"view_all_essays_in_title": "View all essays in %s",
+			"view_all_of_title": "View all of %s",
+			"view_all_pages_in_title": "View all pages in %s",
+			"view_at_title": "View at %s",
+			"view_entire_album": "View entire album",
+			"view_everything_in": "View everything in",
+			"view_everything_in_title": "View everything in %s",
+			"view_everything_published_this_day": "View everything published this day",
+			"view_fullscreen": "View fullscreen",
+			"view_more_in": "View more in",
+			"view_next": "View next",
+			"view_on_a_map": "View on a map",
+			"view_on_title": "View on %s",
+			"view_previous": "View previous",
+			"view_title": "View %s",
+			"viewing_all_albums_in": "Viewing all albums in",
+			"viewing_all_content_in": "Viewing all content in",
+			"viewing_all_essays_in": "Viewing all essays in",
+			"viewing_everything_in": "Viewing everything in",
+			"viewing_everything_in_title": "Viewing everything in %s"
+		},
+
+		"de": {
+			"added": "hinzugefügt",
+			"albums": "Alben",
+			"all_content": "Alle Inhalte",
+			"back_to_top": "Zurück nach oben",
+			"categories": "Kategorien",
+			"close_lightbox": "Lightbox schließen",
+			"content": "Inhalt",
+			"content_from_title": "Inhalt aus %s",
+			"download": "Download",
+			"download_image": "Bild herunterladen",
+			"enter_password": "Passwort eingeben",
+			"error": "Fehler",
+			"essays": "Essays",
+			"essays_from_title": "Essays mit %s",
+			"exit_fullscreen": "Vollbild verlassen",
+			"favorites": "Favoriten",
+			"featured_essays": "Ausgewählte Essays",
+			"features": "Ausgewählte",
+			"from_the_album": "Aus dem Album",
+			"go": "Los",
+			"hide_caption": "Beschriftung ausblenden",
+			"home": "Zuhause",
+			"item": "element",
+			"items": "elemente",
+			"latest": "Neueste",
+			"loading_more": "Lädt weitere",
+			"more": "Mehr",
+			"new": "neu",
+			"newer": "Neuer",
+			"next": "Nächster",
+			"older": "Älter",
+			"of": "von",
+			"on": "auf",
+			"open_mobile_menu": "Mobile-Menü öffnen",
+			"pause": "pause",
+			"play": "Abspielen",
+			"posted_in": "Veröffentlicht in",
+			"previous": "Zurück",
+			"read_more": "Mehr lesen",
+			"read_more_in": "Lesen Sie mehr in",
+			"read_more_in_title": "Lesen Sie mehr in %s",
+			"read_title": "Lesen Sie %s",
+			"recent_activity_from_title": "Neueste Aktivitäten von %s",
+			"recent_uploads_from_the_title_album": "Neueste Uploads in %s-Album",
+			"see_more": "Mehr sehen",
+			"see_more_in": "Siehe mehr in",
+			"sets": "Sets",
+			"share": "Teilen",
+			"share_on_": "Teilen Sie auf",
+			"share_this": "Teilen Sie das",
+			"show_caption": "Bildunterschrift anzeigen",
+			"start_slideshow": "Bildergalerie starten",
+			"stop_slideshow": "Bildergalerie anhalten",
+			"tags": "Schlagwörter",
+			"this_field_is_required": "Dies ist ein Pflichtfeld",
+			"timeline": "Zeitleiste",
+			"topic": "Thema",
+			"view": "Ansicht",
+			"view_album": "Album anzeigen",
+			"view_all": "Alle anzeigen",
+			"view_all_albums": "Alle Alben anzeigen",
+			"view_all_albums_in": "Alle Alben anzeigen in",
+			"view_all_albums_in_title": "Alle Alben in %s ansehen",
+			"view_all_content": "Alle Inhalte ansehen",
+			"view_all_content_in_title": "Alle Inhalte in %s ansehen",
+			"view_all_essays": "Alle Essays ansehen",
+			"view_all_essays_in_title": "Alle Essays in %s ansehen",
+			"view_all_of_title": "Alle %s anzeigen",
+			"view_all_pages_in_title": "Alle Seiten in %s anzeigen",
+			"view_at_title": "Bei %s ansehen",
+			"view_entire_album": "Ganzes Album ansehen",
+			"view_everything_in": "Alles ansehen in",
+			"view_everything_in_title": "Alles ansehen in %s",
+			"view_everything_published_this_day": "Alles was heute veröffentlicht wurde ansehen",
+			"view_fullscreen": "Vollbild Ansicht",
+			"view_more_in": "Weitere ansehen in",
+			"view_next": "Nächstes ansehen",
+			"view_on_a_map": "Auf einer Landkarte ansehen",
+			"view_on_title": "%s ansehen",
+			"view_previous": "Vorheriges ansehen",
+			"view_title": "Ansicht %s",
+			"viewing_all_albums_in": "Anzeigen aller Alben in",
+			"viewing_all_content_in": "Sehen Sie alle Inhalte in",
+			"viewing_all_essays_in": "Ansehen aller Essays",
+			"viewing_everything_in": "Ansehen von allem in",
+			"viewing_everything_in_title": "Ansehen alles in %s"
+		},
+
+		"fr": {
+			"added": "ajouté",
+			"albums": "Albums",
+			"all_content": "Tout le contenu",
+			"back_to_top": "Revenir en haut de la page",
+			"categories": "Catégories",
+			"close_lightbox": "Fermer la visionneuse",
+			"content": "Contenu",
+			"content_from_title": "Contenu de %s",
+			"download": "Télécharger",
+			"download_image": "Télécharger l'image",
+			"enter_password": "Entrer le mot de passe",
+			"error": "Erreur",
+			"essays": "Essais",
+			"essays_from_title": "Écrits de %s",
+			"exit_fullscreen": "Quitter le mode plein écran",
+			"favorites": "Favoris",
+			"featured_essays": "Essais à la une",
+			"features": "Recommandés",
+			"from_the_album": "Tirée de l'album",
+			"go": "Aller",
+			"hide_caption": "Masquer la légende",
+			"home": "Accueil",
+			"item": "élément",
+			"items": "éléments",
+			"latest": "Dernières",
+			"loading_more": "En cours de chargement",
+			"more": "Plus",
+			"new": "nouveau",
+			"newer": "Plus récent",
+			"next": "Suivant",
+			"older": "Plus vieux",
+			"of": "de",
+			"on": "sur",
+			"open_mobile_menu": "Ouvrir le menu mobile",
+			"pause": "pause",
+			"play": "Lecture",
+			"posted_in": "Publié dans",
+			"previous": "Précédent",
+			"read_more": "En savoir plus",
+			"read_more_in": "En savoir plus sur",
+			"read_more_in_title": "En savoir plus sur %s",
+			"read_title": "Lire %s",
+			"recent_activity_from_title": "Activité récente de %s",
+			"recent_uploads_from_the_title_album": "Ajouts récents de l'album dans %s",
+			"see_more": "Voir plus",
+			"see_more_in": "Voir plus dans",
+			"sets": "Ensembles",
+			"share": "Partager",
+			"share_on_": "Partager sur",
+			"share_this": "Partagez ceci",
+			"show_caption": "Afficher la légende",
+			"start_slideshow": "Démarrer le diaporama",
+			"stop_slideshow": "Arrêter le diaporama",
+			"tags": "Mots clés",
+			"this_field_is_required": "Le champ est obligatoire",
+			"timeline": "Chronologie",
+			"topic": "Sujet",
+			"view": "Voir",
+			"view_album": "Voir l'album",
+			"view_all": "Voir tout",
+			"view_all_albums": "Voir tous les albums",
+			"view_all_albums_in": "Voir tous les albums",
+			"view_all_albums_in_title": "Voir tous les albums dans %s",
+			"view_all_content": "Voir tout le contenu",
+			"view_all_content_in_title": "Voir tout le contenu %s",
+			"view_all_essays": "Voir tous les essais",
+			"view_all_essays_in_title": "Voir tous les essais dans %s",
+			"view_all_of_title": "Voir tout le contenu dans %s",
+			"view_all_pages_in_title": "Voir toutes les pages %s",
+			"view_at_title": "Voir sur %s",
+			"view_entire_album": "Voir tout l'album",
+			"view_everything_in": "Voir tout le contenu dans",
+			"view_everything_in_title": "Voir tout le contenu dans %s",
+			"view_everything_published_this_day": "Voir tout le contenu publié aujourd'hui",
+			"view_fullscreen": "Voir en plein écran",
+			"view_more_in": "Voir plus dans",
+			"view_next": "Voir l'élément suivant",
+			"view_on_a_map": "Voir sur une carte",
+			"view_on_title": "Voir sur %s",
+			"view_previous": "Voir l'élément précédent",
+			"view_title": "Voir %s",
+			"viewing_all_albums_in": "Voir tous les albums dans",
+			"viewing_all_content_in": "Voir tout le contenu dans",
+			"viewing_all_essays_in": "Voir tous les écrits dans",
+			"viewing_everything_in": "Voir tous les éléments dans",
+			"viewing_everything_in_title": "Voir tous les éléments dans %s"
+		}
+
+	}
+}

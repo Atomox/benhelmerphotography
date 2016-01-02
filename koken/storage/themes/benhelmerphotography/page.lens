@@ -1,0 +1,27 @@
+<koken:include file="inc/header.html" />
+
+<div id="content" class="page-body">
+
+  <!-- Load this template's source data (page) -->
+  <koken:load>
+
+    <div class="row">
+      <div class="span10 offset1">
+        <!-- Displays the custom page title -->
+        <div class="row">
+          <div class="span4 offset3">
+            <h2>{{ page.title }}</h2>
+          </div>
+        </div>
+        <div class="main-body">
+          <!-- Displays the custom page content -->
+          {{ page.content }}
+        </div>
+      </div>
+    </div>
+
+  </koken:load>
+
+</div> <!-- close #content -->
+
+<koken:include file="inc/footer.html" />

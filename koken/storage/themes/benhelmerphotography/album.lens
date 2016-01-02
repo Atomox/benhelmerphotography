@@ -1,0 +1,155 @@
+<koken:include file="inc/header.html" />
+
+<div id="content" class="album-body">
+
+	<!-- Load this template's source data (album), limit for pagination -->
+	<koken:load limit="30">
+
+		<!-- Add Facebook open graph metadata for nicer sharing -->
+		<koken:head>
+			<meta property="og:site_name" content="{{ site.title }}" />
+			<meta property="og:title" content="{{ album.title strip_html="true" }}" />
+			<meta property="og:description" content="{{ album.summary strip_html="true" }}" />
+			<meta property="og:type" content="website" />
+			<koken:loop data="album.covers">
+				<meta property="og:image" content="{{ content.presets.medium.url }}" />
+			</koken:loop>
+		</koken:head>
+
+
+		<!-- Displays links to neighbor albums, link back to albums index -->
+		<div id="content-pag">
+
+			<!-- <h3><koken:link to="albums">Albums</koken:link></h3> -->
+
+			<koken:previous>
+				<koken:link title="View {{ album.title }}"><i class="icon-double-angle-left"></i> {{ album.title }}</koken:link>
+			</koken:previous>
+			&nbsp;
+			<koken:link lightbox="true"><i class="icon-desktop"></i></koken:link>
+			&nbsp;
+			<koken:next>
+				<koken:link title="View {{ album.title }}">{{ album.title }} <i class="icon-double-angle-right"></i></koken:link>
+			</koken:next>
+
+		</div>
+
+		<!-- Display the album's title -->
+		<h2>
+			{{ album.title }}
+		</h2>
+
+		<!-- Display the album's description -->
+		{{ album.description paragraphs="true" }}
+
+		<!-- Display essays/pages written about this album -->
+		<koken:topics>
+			<p>
+				<strong>Related content:</strong>
+				<koken:loop separator=", ">
+					<koken:link>
+						{{ essay.title }}
+					</koken:link>
+				</koken:loop>
+			</p>
+		</koken:topics>
+
+		<!-- Display the album's categories -->
+		<koken:categories>
+			<p>
+				<strong>Categories:</strong>
+				<koken:loop separator=", ">
+					<koken:link>
+						{{ category.title }}
+					</koken:link>
+				</koken:loop>
+			</p>
+		</koken:categories>
+
+		<!-- Display the album's tags -->
+		<koken:tags>
+			<p class="tags">
+				<i class="icon-tags"></i>
+				<koken:loop separator=", ">
+					<koken:link>
+						{{ tag.title }}
+					</koken:link>
+				</koken:loop>
+			</p>
+		</koken:tags>
+
+		<!-- If album is part of a set, display link to it -->
+		<koken:parent>
+			<p>
+				<strong>From the set:</strong> <koken:link title="View {{ album.title }}">
+				{{ album.title }}</koken:link>
+			</p>
+		</koken:parent>
+
+		<!-- Loop over all the items the album contains. Dislay photo, title and caption and link each to content.detail.lens -->
+		<koken:loop>
+			<div class="album-image">
+				<!-- Displayed if the asset is an image -->
+				<koken:content_image>
+					<koken:link>
+						<koken:img />
+					</koken:link>
+				</koken:content_image>
+				<!-- Displayed if the asset is a video -->
+				<koken:content_video>
+					<koken:video />
+				</koken:content_video>
+				<div class="row">
+					<div class="span6 offset3">
+						<h3>
+							{{ content.title | content.filename }}
+						</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span6 offset3">
+						<p class="description">
+							{{ content.caption truncate="240" }}
+						</p>
+					</div>
+					<div class="span3">
+						<p class="photo-details">
+							<!-- Opens the image in the lightbox viewer -->
+							<koken:link lightbox="true"><i class="icon-desktop"></i> Full Screen</koken:link><br/>
+							<i class="icon-calendar"></i> Added: {{ content.uploaded_on date_only="true" }}<br/>
+							<koken:not empty="exif.model">
+								<i class="icon-camera"></i> {{ exif.model }}<br/>
+							</koken:not>
+							<!-- If item is an image and allows downloading, show download link -->
+							<koken:max_download>
+								<i class="icon-download"></i>
+									<koken:link>
+										Download
+									</koken:link>
+							<koken:else>
+								<i class="icon-download"></i> No download
+							</koken:max_download>
+							| {{ content.license.clean }}
+							<br/>
+						</p>
+					</div>
+				</div>
+			</div>
+		</koken:loop>
+
+		<!-- Paginate the results -->
+		<koken:include file="inc/pagination.html" />
+
+		<!-- Fallback content if no data was loaded by koken:load -->
+		<koken:else>
+
+			Nothing loaded
+
+	</koken:load>
+
+</div> <!-- close #content -->
+
+<!-- Turn on keyboard scrolling (left/right arrow keys). Target each image. -->
+<koken:keyboard_scroll element="div.album-image" offset="10" />
+
+<koken:include file="inc/footer.html" />
