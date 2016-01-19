@@ -1,0 +1,80 @@
+<koken:include file="inc/header.html" />
+
+<koken:load limit="20">
+
+	<koken:loop>
+
+		<article>
+
+			<div class="content-row">
+
+				<div class="wrap">
+
+					<h2 class="title">
+						<koken:link>{{ essay.title }}</koken:link>
+					</h2>
+
+					<koken:time data="essay.published_on" />
+
+				</div>
+
+			</div>
+
+			<div class="essay-body">
+
+				{{ essay.content }}
+
+			</div>
+
+			<div class="essay-foot">
+
+				<koken:categories>
+
+					<koken:loop separator=", ">
+						<koken:link>
+							{{ category.title }}
+						</koken:link>
+					</koken:loop>
+				</koken:categories>
+
+			</div>
+
+		</article>
+
+	</koken:loop>
+
+	<koken:pagination>
+
+		<div class="row">
+
+			<div class="paginate">
+
+				<koken:if condition="{{ page }} < {{ pages }}">
+
+					<koken:if condition="{{ page }} > 1">
+
+						<koken:link data="previous_page" title="{{ previous_page.number }}" style="float:right;">
+							Newer &rarr;
+						</koken:link>
+
+					</koken:if>
+
+					<koken:link data="next_page" title="View page {{ next_page.number }}">
+						&larr; Older
+					</koken:link>
+
+				</koken:if>
+
+			</div>
+
+		</div>
+
+	</koken:pagination>
+
+	<koken:else>
+
+	No essays found. Create some in Text.
+
+</koken:load>
+
+<koken:include file="inc/footer.html" />

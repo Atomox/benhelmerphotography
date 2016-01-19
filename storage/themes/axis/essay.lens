@@ -1,0 +1,9 @@
+<koken:include file="layouts/header.html" />
+
+<koken:load>
+
+    <koken:include file="layouts/article.html" />
+
+</koken:load>
+
+<koken:include file="layouts/footer.html" />

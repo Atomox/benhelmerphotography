@@ -1,0 +1,29 @@
+<koken:if true="pjax">
+	<koken:title />
+<koken:else>
+	<koken:include file="layouts/header.html" />
+</koken:if>
+
+<div id="main">
+
+<koken:load limit="10">
+
+	<p>
+		<koken:link to="essays">Essays </koken:link>&nbsp;&nbsp;/&nbsp;&nbsp;{{ archive.type.plural }}&nbsp;&nbsp;/&nbsp;&nbsp;{{ archive.title }}
+	</p>
+
+	<koken:loop>
+
+		<koken:include file="layouts/essay.html" />
+
+	</koken:loop>
+
+</koken:load>
+
+</div>
+
+<koken:if true="pjax">
+	<script>$K.ready();</script>
+<koken:else>
+	<koken:include file="layouts/footer.html" />
+</koken:not>

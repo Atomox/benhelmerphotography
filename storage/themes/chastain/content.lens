@@ -1,0 +1,99 @@
+<koken:include file="inc/header.html" />
+
+<koken:load>
+
+	<koken:head>
+		<meta property="og:site_name" content="{{ site.title }}" />
+		<meta property="og:title" content="{{ content.title|content.filename }}" />
+		<meta property="og:description" content="{{ content.caption }}" />
+		<meta property="og:type" content="website" />
+		<meta property="og:image" content="{{ content.presets.medium.url }}" />
+		<koken:content_image>
+			<koken:not empty="profile.twitter">
+				<meta name="twitter:card" content="photo" />
+				<meta name="twitter:site" content="@{{ profile.twitter }}" />
+				<meta name="twitter:creator" content="@{{ profile.twitter }}" />
+				<meta name="twitter:title" content="{{ content.title|content.filename }}" />
+				<meta name="twitter:description" content="{{ content.caption }}" />
+				<meta name="twitter:image" content="{{ content.presets.medium.url }}" />
+				<meta name="twitter:image:width" content="{{ content.presets.medium.width }}" />
+				<meta name="twitter:image:height" content="{{ content.presets.medium.height }}" />
+			</koken:not>
+		</koken:content_image>
+	</koken:head>
+
+	<div class="img">
+
+		<span class="img-wrap">
+
+			<span class="img-pag left"><span>
+				<koken:previous>
+					<koken:link title="{{ content.title | content.filename }}">
+						<i class="icon-left-open-big"></i>
+					</koken:link>
+				</koken:previous>
+			</span></span>
+
+			<span class="img-pag right"><span>
+				<koken:next>
+					<koken:link title="{{ content.title | content.filename }}">
+						<i class="icon-right-open-big"></i>
+					</koken:link>
+				</koken:next>
+			</span></span>
+
+			<koken:content_image>
+
+				<koken:img class="content" lazy="true" />
+
+			</koken:content_image>
+
+			<koken:content_video>
+
+				<koken:video controls="true" />
+
+			</koken:content_video>
+		</span>
+
+		<span class="img-data">
+
+			<span class="img-caption">
+				<h4>{{ content.title | content.filename }}</h4>
+				{{ content.caption paragraphs="true" }}
+			</span>
+
+		</span>
+
+		<koken:if true="settings.social_bttns_show_content">
+			<koken:include file="inc/social-bttns.html" />
+		</koken:if>
+
+	</div>
+
+	<koken:parent>
+
+		<div class="bot">
+
+			<ul>
+
+				<li>
+
+					<span class="cell single">
+
+						<span class="nav">
+							<koken:link title="{{ album.title }}"><i class="icon-left-open-mini"></i>{{ album.title }}</koken:link>
+						</span>
+
+					</span>
+
+				</li>
+
+			</ul>
+
+		</div>
+
+	</koken:parent>
+
+</koken:load>
+
+<koken:include file="inc/footer.html" />

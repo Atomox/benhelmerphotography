@@ -1,0 +1,24 @@
+<koken:include file="layouts/header.html" />
+
+<div id="twocol" class="flip">
+
+	<koken:load>
+
+		<koken:head>
+			<meta property="og:site_name" content="{{ site.title }}" />
+			<meta property="og:title" content="{{ essay.title strip_html="true" }}" />
+			<meta property="og:description" content="{{ essay.excerpt strip_html="true" }}" />
+			<meta name="medium" content="article" />
+		</koken:head>
+
+		<koken:include file="layouts/article.html" />
+
+		<koken:else>
+
+		No essays found. Create some in Text.
+
+	</koken:load>
+
+</div>
+
+<koken:include file="layouts/footer.html" />

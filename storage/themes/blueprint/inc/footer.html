@@ -1,0 +1,30 @@
+	<footer class="main">
+
+		<!-- Outputs the site copyright. Editable in console Settings -->
+		{{ site.copyright }}
+
+		&nbsp;&nbsp;
+
+		<!-- Outputs link to publisher's Facebook page, if available. -->
+		<koken:profile_facebook>
+		  <a href="{{ profile.facebook }}">
+		    Facebook
+		  </a>
+		</koken:profile_facebook>
+
+		&nbsp;&nbsp;
+
+		<!-- Outputs link to publisher's Twitter page, if available. -->
+		<koken:profile_twitter>
+		  <a href="http://twitter.com/{{ profile.twitter }}">
+		    Twitter
+		  </a>
+		</koken:profile_twitter>
+
+	</footer>
+
+	</div> <!-- close #container -->
+
+</body>
+
+</html>

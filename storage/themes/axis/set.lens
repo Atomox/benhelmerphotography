@@ -1,0 +1,30 @@
+<koken:include file="layouts/header.html" />
+
+<koken:load>
+
+	<koken:head>
+		<meta property="og:title" content="{{ site.title }}: {{ album.title }}" />
+		<meta property="og:description" content="{{ album.summary }}" />
+		<meta name="medium" content="mult" />
+		<koken:loop data="album.covers">
+			<meta property="og:image" content="{{ content.presets.medium.url }}" />
+		</koken:loop>
+	</koken:head>
+
+	<div id="sets-layout">
+
+		<koken:loop>
+
+			<div class="item">
+				<koken:link><koken:img size="3:2" /></koken:link>
+				<h2><koken:link>{{ album.title }}</koken:link></h2>
+				{{ album.summary }}
+			</div>
+
+		</koken:loop>
+
+	</div>
+
+</koken:load>
+
+<koken:include file="layouts/footer.html" />

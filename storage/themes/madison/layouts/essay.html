@@ -1,0 +1,24 @@
+<article>
+
+	<header>
+		<h1>
+			<koken:link>
+				{{ title }}
+			</koken:link>
+		</h1>
+		<span class="date"><koken:time class="publish-date" show="date" /></span>
+	</header>
+
+	{{ content }}
+
+	<footer>
+		<koken:tags>
+				<p><koken:loop separator=", ">
+					<koken:link>
+						{{ tag.title }}
+					</koken:link>
+				</koken:loop></p>
+			</koken:tags>
+	</footer>
+
+</article>

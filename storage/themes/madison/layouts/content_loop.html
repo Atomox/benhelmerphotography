@@ -1,0 +1,98 @@
+<koken:loop>
+
+<div id="content-{{ id }}" class="item">
+
+	<div class="media">
+
+		<koken:content_image>
+
+			<koken:if true="settings.show_img_spinner">
+
+				<koken:img lazy="true" fade="true" />
+
+			<koken:else>
+
+				<koken:img lazy="true" fade="true" class="nospin" />
+
+			</koken:if>
+
+		</koken:content_image>
+
+		<koken:content_video>
+
+			<koken:video />
+
+		</koken:content_video>
+
+		<koken:if true="settings.show_exif">
+			<koken:exif>
+				<ol class="exif">
+					<koken:not empty="exif.aperture">
+						<li>
+							{{ exif.aperture }}
+						</li>
+					</koken:not>
+					<koken:not empty="exif.exposure">
+						<li>
+							{{ exif.exposure }}
+						</li>
+					</koken:not>
+					<koken:not empty="exif.focal_length">
+						<li>
+							{{ exif.focal_length }}
+						</li>
+					</koken:not>
+					<koken:not empty="exif.iso_speed_ratings">
+						<li>
+							{{ exif.iso_speed_ratings }}
+						</li>
+	    		 </koken:not>
+	    		</ol>
+			</koken:exif>
+		</koken:if>
+
+		<span class="text">
+
+			<koken:if true="settings.show_title">
+				<h3>
+					{{ content.title | content.filename }}
+				</h3>
+			</koken:if>
+
+			<koken:if true="settings.show_caption">
+				<koken:not empty="content.caption">
+					{{ content.caption paragraphs="true" }}
+				</koken:not>
+			</koken:if>
+
+		</span>
+
+	</div> <!-- close .media -->
+
+</div> <!-- close .item -->
+
+</koken:loop>
+
+<koken:keyboard_scroll element=".item" />
+
+<koken:if true="settings.show_strip">
+
+<div id="strip">
+
+	<ol>
+
+		<koken:loop>
+
+			<li>
+
+				<a href="#content-{{ id }}"></a>
+
+			</li>
+
+		</koken:loop>
+
+	</ol>
+
+</div> <!-- close #strip -->
+
+</koken:if>

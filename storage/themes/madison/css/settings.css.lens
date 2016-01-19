@@ -1,0 +1,201 @@
+@import url(css/titles/[$font_title].css);
+@import url(css/headers/[$font_head].css);
+@import url(css/body/[$font_body].css);
+
+header.top h1 {
+	font-size: [$title_size]px;
+	text-transform: $title_uppercase;
+}
+
+body {
+	color: $font_color;
+	background: $background_color;
+}
+
+a,h1,h2,h3,h1 a,h4,h5,h6 {
+	color: $hot;
+}
+
+blockquote {
+	color: $warm;
+	border-left:1px solid $blockquote_border_color;
+}
+
+#col {
+	width:[$col_width]px;
+	line-height:[$col_line_height];
+}
+
+#col, #strip {
+	top:[$offset_top]px;
+}
+
+#main {
+	width:[$col_main_width]px;
+	left:[$col_main_left]px;
+}
+
+#page {
+	margin-top:[$offset_top]px;
+}
+
+header.top {
+	margin-bottom:[$col_spacing]px;
+}
+
+header.top h1 {
+	font-size:[$site_title_size]px;
+	line-height: [$site_title_lh]px;
+	font-weight: $site_title_weight;
+	text-transform: $site_title_case;
+}
+
+footer {
+	background: $background_color;
+	color: $cool;
+}
+
+footer a {
+	color: $cool;
+	text-decoration:underline;
+}
+
+nav {
+	text-transform:$nav_transform;
+	font-size:[$nav_font_size]px;
+}
+
+nav ul {
+	margin-bottom:[$col_spacing]px;
+}
+
+nav ul ul {
+	margin-left:[$nav_indent]px;
+}
+
+nav a, nav a:link, nav a:hover {
+	color: $hot_nav;
+}
+
+nav a.k-nav-current, nav a.k-nav-open {
+	color: $color_nav_current;
+}
+
+#main ol.exif li {
+	color: $cool;
+}
+
+#strip a {
+	background:$strip_color;
+}
+
+#strip a:hover {
+	background:$strip_color_hover;
+}
+
+#strip a.current {
+	background:$strip_color_current;
+}
+
+.k-content-title {
+	color: $hot;
+}
+
+.k-content-caption {
+	color: $warm;
+}
+
+img.k-lazy-loading {
+	background: url(css/$style/spinner.gif) center center no-repeat;
+}
+
+img.nospin {
+	background:none !important;
+}
+
+/* #Tablet
+================================================== */
+
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+
+	#strip {
+		display:none;
+	}
+
+	#col .in {
+		padding:0 0 0 20px;
+	}
+
+	#main {
+		width:540px;
+		left:200px;
+	}
+
+	/*body::before{content: "TABLET PORTRAIT";font-weight: bold;display: block;text-align: center;background: rgba(255,255,0, 0.9);position: absolute;top: 0;left: 0;right: 0;z-index: 99;}*/
+}
+
+/*  #Mobile (Portrait)
+================================================== */
+
+@media only screen and (max-width: 767px) {
+
+	img.custom_logo {
+		-moz-transform: scale($site_title_img_scale_mobile);
+		-o-transform: scale($site_title_img_scale_mobile);
+		-webkit-transform: scale($site_title_img_scale_mobile);
+		transform: scale($site_title_img_scale_mobile);
+	    -moz-transform-origin: 0 50%;
+		-o-transform-origin: 0 50%;
+		-webkit-transform-origin: 0 50%;
+		transform-origin: 0 50%;
+	    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=[$site_title_img_scale_mobile], M12=0, M21=0, M22=[$site_title_img_scale_mobile], SizingMethod='auto expand')";
+	}
+
+	#page {
+		margin-top:20px;
+	}
+
+	#strip {
+		display:none;
+	}
+
+	#col {
+		position:relative;
+		top:0;
+		width:100%;
+	}
+
+	#col .in {
+		padding:0 10px;
+	}
+
+	nav * {
+		display:block;
+	}
+
+	#main {
+		width:100%;
+		left:0;
+		top:0;
+		padding:0 10px;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	#main .item {
+		float:none;
+	}
+
+	/*body::before{content: "MOBILE PORTRAIT";font-weight: bold;display: block;text-align: center;background: rgba(255,255,0, 0.9);position: absolute;top: 0;left: 0;right: 0;z-index: 99;}*/
+
+}
+
+/* #Mobile (Landscape)
+================================================== */
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+
+	/*body::before{content: "MOBILE LANDSCAPE";font-weight: bold;display: block;text-align: center;background: rgba(255,255,0, 0.9);position: absolute;top: 0;left: 0;right: 0;z-index: 99;}*/
+
+}

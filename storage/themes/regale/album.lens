@@ -1,0 +1,19 @@
+<koken:include file="inc/header.html" />
+
+<koken:load limit="30" infinite="true">
+
+	<koken:head>
+		<meta property="og:site_name" content="{{ site.title }}" />
+		<meta property="og:title" content="{{ album.title strip_html="true" }}" />
+		<meta property="og:description" content="{{ album.summary strip_html="true" }}" />
+		<meta property="og:type" content="website" />
+		<koken:loop data="album.covers">
+			<meta property="og:image" content="{{ content.presets.medium.url }}" />
+		</koken:loop>
+	</koken:head>
+
+	<koken:include file="inc/grid.html" />
+
+</koken:load>
+
+<koken:include file="inc/footer.html" />

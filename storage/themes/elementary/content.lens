@@ -1,0 +1,307 @@
+<koken:include file="layouts/header.html" />
+
+<koken:load>
+
+<koken:include file="layouts/content_detail_og_meta.html" />
+
+<div class="head mcol">
+
+	<ul class="detail-nav">
+
+		<koken:parent>
+			<koken:variable name="previous_label" value="Previous" />
+			<koken:variable name="next_label" value="Next" />
+		<koken:else>
+			<koken:variable name="previous_label" value="Newer" />
+			<koken:variable name="next_label" value="Older" />
+		</koken:parent>
+
+		<li>
+			<koken:previous>
+				<koken:link title="{{ previous_label }}">{{ previous_label }}</koken:link>
+			<koken:else>
+				<a class="disabled">{{ previous_label }}</a>
+			</koken:previous>
+		</li>
+
+		<li>/</li>
+
+		<li>
+			<koken:link lightbox="true">Lightbox</koken:link>
+		</li>
+
+		<li>/</li>
+
+		<li>
+			<koken:next>
+				<koken:link title="{{ next_label }}">{{ next_label }}</koken:link>
+			<koken:else>
+				<a class="disabled" title="{{ next_label }}">{{ next_label }}</a>
+			</koken:next>
+		</li>
+
+	</ul>
+
+	<h2>
+		{{ content.title | content.filename }}
+	</h2>
+
+</div>
+
+<div id="twocol">
+
+	<div class="mcol">
+
+		<div class="content">
+
+			<koken:content_image>
+
+				<koken:link class="mag" lightbox="true" title="Lightbox">
+
+					<koken:img />
+
+				</koken:link>
+
+			</koken:content_image>
+
+			<koken:content_video>
+
+				<koken:video />
+
+			</koken:content_video>
+
+		</div>
+
+		{{ content.caption paragraphs="true" }}
+
+	</div>
+
+	<div class="rcol">
+
+		<section class="view-album">
+
+			<koken:if true="settings.content_detail_show_tnav">
+
+			<koken:parent>
+
+				From the album <koken:link title="View {{ album.title }}">{{ album.title }}</koken:link>
+
+				<koken:else>
+
+				From the <koken:link to="contents">content stream</koken:link>
+
+			</koken:parent>
+
+			<ol class="thumb-strip">
+
+				<koken:neighbors>
+
+					<koken:previous>
+						<koken:loop>
+
+							<li>
+								<koken:link>
+									<koken:img preset="tiny" crop="true" alt="thumb" width="60" height="60" />
+								</koken:link>
+							</li>
+
+						</koken:loop>
+					</koken:previous>
+
+					<li>
+						<koken:img preset="tiny" crop="true" alt="thumb" width="60" height="60" />
+					</li>
+
+					<koken:next>
+						<koken:loop>
+
+							<li>
+								<koken:link>
+									<koken:img preset="tiny" crop="true" alt="thumb" width="60" height="60" />
+								</koken:link>
+							</li>
+
+						</koken:loop>
+					</koken:next>
+
+				</koken:neighbors>
+			</ol>
+			</koken:if>
+
+		</section>
+
+		<koken:albums>
+
+		<section>
+
+			Also appears in:
+			<koken:loop separator=", ">
+				<koken:link title="{{ album.title }}">
+					{{ album.title }}
+				</koken:link>
+			</koken:loop>
+
+		</section>
+
+		</koken:albums>
+
+		<section>
+
+			<ol class="data">
+				<koken:if true="settings.content_detail_show_date">
+				<li>
+					<span class="label">Uploaded</span>
+					<span class="value">
+						<koken:time data="content.uploaded_on" show="date" />
+					</span>
+				</li>
+				<koken:not empty="captured_on.timestamp">
+				<li>
+					<span class="label">Captured</span>
+					<span class="value">
+						<koken:time data="content.captured_on" show="date" />
+					</span>
+				</li>
+				</koken:not>
+				</koken:if>
+				<koken:if true="settings.content_detail_show_exif">
+					<koken:exif>
+						<koken:not empty="exif.model">
+							<li>
+								<span class="label">Model</span>
+								<span class="value">
+									{{ exif.model }}
+								</span>
+							</li>
+						</koken:not>
+						<koken:not empty="exif.aperture">
+							<li>
+								<span class="label">Aperture</span>
+								<span class="value">
+									{{ exif.aperture }}
+								</span>
+							</li>
+						</koken:not>
+						<koken:not empty="exif.exposure">
+							<li>
+								<span class="label">Exposure</span>
+								<span class="value">
+									{{ exif.exposure }}
+								</span>
+							</li>
+						</koken:not>
+						<koken:not empty="exif.focal_length">
+							<li>
+								<span class="label">Focal length</span>
+								<span class="value">
+									{{ exif.focal_length }}
+								</span>
+							</li>
+						</koken:not>
+						<koken:not empty="exif.iso_speed_ratings">
+							<li>
+								<span class="label">ISO</span>
+								<span class="value">
+									{{ exif.iso_speed_ratings }}
+								</span>
+							</li>
+					     </koken:not>
+					</koken:exif>
+				</koken:if>
+				<koken:if true="settings.content_detail_show_license">
+				<li>
+					<span class="label">License</span>
+					<span class="value">{{ content.license.clean }}</span>
+				</li>
+				</koken:if>
+				<koken:if true="settings.content_detail_show_cats">
+					<koken:categories>
+					<li>
+						<span class="label">Categories</span>
+						<span class="value">
+							<koken:loop separator=", ">
+								<koken:link>
+									{{ category.title }}
+								</koken:link>
+							</koken:loop>
+						</span>
+					</li>
+					</koken:categories>
+				</koken:if>
+				<koken:if true="settings.content_detail_show_tags">
+					<koken:tags>
+						<li>
+							<span class="label">Tags</span>
+							<span class="value">
+								<koken:loop separator=", ">
+									<koken:link>
+										{{ tag.title }}
+									</koken:link>
+								</koken:loop>
+							</span>
+						</li>
+					</koken:tags>
+				</koken:if>
+
+				<koken:geolocation>
+					<li>
+						<span class="label">Location</span>
+						<span class="value">
+							<a target="_blank" href="http://maps.google.com/?q={{ geolocation.latitude }},{{ geolocation.longitude }}">View map</a>
+						</span>
+					</li>
+				</koken:geolocation>
+			</ol>
+
+		</section>
+
+		<section>
+			<koken:max_download>
+				<koken:loop>
+				<section>
+					<koken:link>Download {{ max_download.label }} ({{ max_download.width }} x {{ max_download.height }})</koken:link>
+				</section>
+				</koken:loop>
+			</koken:max_download>
+		</section>
+
+	</div>
+
+</div> <!-- close main -->
+
+<script type="text/javascript">
+	$(function() {
+
+		$(document).keydown(function(e){
+
+			switch(e.keyCode) {
+				case 37:
+					if ($('a.nav.prev').attr('href')) {
+						window.location.href = $('a.nav.prev').attr('href');
+					}
+					break;
+
+				case 39:
+					if ($('a.nav.next').attr('href')) {
+						window.location.href = $('a.nav.next').attr('href');
+					}
+					break;
+
+				case 76:
+				case 70:
+					window.location.href = "{{ location.root }}{{ location.here }}/lightbox"
+					break;
+			}
+
+		});
+
+	});
+</script>
+
+<koken:else>
+
+	Nothing to see here
+
+</koken:load>
+
+<koken:include file="layouts/footer.html" />

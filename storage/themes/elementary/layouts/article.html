@@ -1,0 +1,53 @@
+<article>
+
+	<div class="lcol">
+
+		<aside>
+
+			<h6>Published</h6>
+			<p><koken:time /></p>
+
+			<koken:topics>
+				<h6>Topics</h6>
+				<p><koken:loop separator=", ">
+					<koken:link>
+						{{ album.title }}
+					</koken:link>
+				</koken:loop></p>
+			</koken:topics>
+
+			<koken:categories>
+				<h6>Categories</h6>
+				<p><koken:loop separator=", ">
+					<koken:link>
+						{{ category.title }}
+					</koken:link>
+				</koken:loop></p>
+			</koken:categories>
+
+			<koken:tags>
+				<h6>Tags</h6>
+				<p><koken:loop separator=", ">
+					<koken:link>
+						{{ tag.title }}
+					</koken:link>
+				</koken:loop></p>
+			</koken:tags>
+
+		</aside>
+
+	</div>
+
+	<div class="mcol">
+
+		<header>
+			<h2>
+				<koken:link>{{ essay.title }}</koken:link>
+			</h2>
+		</header>
+
+		{{ essay.content }}
+
+	</div>
+
+</article>

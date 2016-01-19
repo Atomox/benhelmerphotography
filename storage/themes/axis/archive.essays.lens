@@ -1,0 +1,19 @@
+<koken:include file="layouts/header.html" />
+
+<koken:load limit="20">
+
+<div id="archive-head">
+	Essay archive &mdash; {{ archive.type.plural }} &mdash; {{ archive.title }}
+</div>
+
+<koken:loop>
+
+    <koken:include file="layouts/article.html" />
+
+</koken:loop>
+
+<koken:include file="layouts/pagination.html" />
+
+</koken:load>
+
+<koken:include file="layouts/footer.html" />

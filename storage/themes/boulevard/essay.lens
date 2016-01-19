@@ -1,0 +1,29 @@
+<koken:include file="inc/head.html" />
+
+	<koken:include file="inc/header-essays.html" />
+
+<koken:load>
+
+	<div id="text">
+
+		<div class="lcol">
+
+			<koken:include file="inc/essay-article.html" />
+
+		</div>
+
+		<div class="rcol">
+
+			<koken:if true="settings.essay_show_aside">
+
+				<koken:include file="inc/essay-aside.html" />
+
+			</koken:if>
+
+		</div>
+
+	</div>
+
+</koken:load>
+
+<koken:include file="inc/footer.html" />

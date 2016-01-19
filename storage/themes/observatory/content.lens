@@ -1,0 +1,147 @@
+<koken:include file="inc/header.html" />
+
+<koken:load>
+
+	<koken:head>
+		<meta property="og:site_name" content="{{ site.title }}" />
+		<meta property="og:title" content="{{ content.title|content.filename strip_html="true" }}" />
+		<meta property="og:description" content="{{ content.caption strip_html="true" }}" />
+		<meta property="og:type" content="website" />
+		<meta property="og:image" content="{{ content.presets.medium.url }}" />
+		<koken:content_image>
+			<koken:not empty="profile.twitter">
+				<meta name="twitter:card" content="photo" />
+				<meta name="twitter:site" content="@{{ profile.twitter }}" />
+				<meta name="twitter:creator" content="@{{ profile.twitter }}" />
+				<meta name="twitter:title" content="{{ content.title|content.filename strip_html="true" }}" />
+				<meta name="twitter:description" content="{{ content.caption strip_html="true"  }}" />
+				<meta name="twitter:image" content="{{ content.presets.medium.url }}" />
+				<meta name="twitter:image:width" content="{{ content.presets.medium.width }}" />
+				<meta name="twitter:image:height" content="{{ content.presets.medium.height }}" />
+			</koken:not>
+		</koken:content_image>
+	</koken:head>
+
+	<div id="mob-pag" class="content-row">
+
+		<div class="content-wrap">
+
+			<koken:previous>
+				<koken:link class="pag" title="Previous">&larr; Previous</koken:link>
+			</koken:previous>
+
+			&nbsp;&nbsp;
+
+			<koken:next>
+				<koken:link class="pag" title="Next">Next &rarr;</koken:link>
+			</koken:next>
+
+		</div>
+
+	</div>
+
+	<div class="content-row">
+
+		<div class="content-wrap">
+
+			<ul class="content-detail">
+
+				<li>
+					<span class="l">
+						<koken:previous>
+							<koken:link class="pag" title="Previous">&larr; Previous</koken:link>
+						</koken:previous>
+					</span>
+					<span class="m">
+						<h3>{{ content.title | content.filename }}</h3>
+						{{ content.caption }}
+					</span>
+					<span class="r">
+						<koken:next>
+							<koken:link class="pag" title="Next">Next &rarr;</koken:link>
+						</koken:next>
+					</span>
+				</li>
+
+			</ul>
+
+		</div>
+
+	</div>
+
+	<div class="list-image">
+
+		<koken:content_image>
+
+			<koken:img />
+
+		</koken:content_image>
+
+		<koken:content_video>
+
+			<koken:video controls="true" />
+
+		</koken:content_video>
+
+		<koken:if true="settings.show_exif">
+			<koken:exif>
+				<ol class="exif">
+					<koken:not empty="exif.aperture">
+						<li>
+							{{ exif.aperture }}
+						</li>
+					</koken:not>
+					<koken:not empty="exif.exposure">
+						<li>
+							{{ exif.exposure }}
+						</li>
+					</koken:not>
+					<koken:not empty="exif.focal_length">
+						<li>
+							{{ exif.focal_length }}
+						</li>
+					</koken:not>
+					<koken:not empty="exif.iso_speed_ratings">
+						<li>
+							{{ exif.iso_speed_ratings }}
+						</li>
+	    		 </koken:not>
+	    		</ol>
+			</koken:exif>
+		</koken:if>
+
+	</div>
+
+	<koken:if true="settings.social_bttns_show_content">
+		<div class="content-row">
+			<koken:include file="inc/social-bttns.html" />
+		</div>
+	</koken:if>
+
+	<koken:if true="settings.cd_show_more">
+
+		<koken:parent>
+
+			<div class="content-row">
+
+				<koken:link title="View" title="{{ album.title }}"><h3>{{ album.title }}<h3></koken:link>
+
+			</div>
+
+			<koken:include file="inc/loop-content-grid.html" />
+
+			<koken:else>
+
+			<koken:load source="contents">
+
+				<koken:include file="inc/loop-content-grid.html" />
+
+			</koken:load>
+
+		</koken:parent>
+
+	</koken:if>
+
+</koken:load>
+
+<koken:include file="inc/footer.html" />

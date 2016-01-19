@@ -1,0 +1,121 @@
+<koken:include file="inc/header.html" />
+
+<div id="content" class="stream-body">
+
+	<!-- Load this template's source data (contents), limit for pagination -->
+	<koken:load limit="30">
+
+		<div class="row">
+			<div class="span6">
+				<h2>All Photos / Stream</h2>
+			</div>
+			<div class="span6">
+				<ul class="nav nav-pills" style="float: right;">
+  				<li class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-calendar"></i> by date <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<!-- Links to content archived by date, categories and tags -->
+							<koken:load source="archives" summary="true" limit_to="content">
+								<koken:loop>
+									<li>
+										<koken:link to="archive_contents">
+											{{ title }}&nbsp;({{ counts.content }})
+										</koken:link>
+									</li>
+								</koken:loop>
+							</koken:load>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-book"></i> by category <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<koken:load source="categories" summary="true" limit_to="content" order_by="content_count">
+								<koken:loop>
+									<li>
+										<koken:link to="archive_contents">
+											{{ title }}&nbsp;({{ counts.content }})
+										</koken:link>
+									</li>
+								</koken:loop>
+							</koken:load>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-tags"></i> by tag <b class="caret"></b></a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<koken:load source="tags" summary="true" limit_to="content" order_by="content_count">
+							<koken:loop>
+								<li>
+									<koken:link to="archive_contents">
+										{{ title }}&nbsp;({{ counts.content }})
+									</koken:link>
+								</li>
+							</koken:loop>
+						</koken:load>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+
+			<!-- Loop over all public content, display info about each, link to content.detail.lens -->
+			<koken:loop>
+
+				<!-- wrapper used for keyboard navigation targetting -->
+				<div class="row item stream-item">
+					<div class="span9">
+						<koken:link title="View {{ content.filename }}">
+							<koken:img lazy="true" fade="true" />
+						</koken:link>
+						<koken:keyboard_scroll element="div.stream-item" offset="10" />
+					</div>
+					<div class="span3">
+						<h2>
+							<koken:link title="View {{ content.filename }}">
+								{{ content.title | content.filename }}
+							</koken:link>
+						</h2>
+
+						<p>
+							{{ content.caption  truncate="240" }}
+
+							<br/><br/>
+							<!--
+							<koken:link title="View {{ content.filename }}">
+								read more <i class="icon-signin"></i>
+							</koken:link> -->
+						</p>
+
+						<p class="photo-details">
+							<!-- Opens the image in the lightbox viewer -->
+							<koken:link lightbox="true"><i class="icon-desktop"></i> Full Screen</koken:link><br/>
+							<i class="icon-calendar"></i> Added: {{ content.uploaded_on date_only="true" }}<br/>
+							<koken:not empty="exif.model">
+								<i class="icon-camera"></i> {{ exif.model }}<br/>
+							</koken:not>
+							<i class="icon-info-sign"></i> {{ content.license.clean }}<br/>
+						</p>
+					</div>
+				</div>
+
+			</koken:loop>
+
+			<!-- Paginate the results -->
+			<koken:include file="inc/pagination.html" />
+
+		<!-- Fallback content if no data was loaded by koken:load -->
+		<koken:else>
+
+			Nothing loaded
+
+	</koken:load>
+
+</div> <!-- close #content -->
+
+<!-- Turn on keyboard scrolling (left/right arrow keys). Target each album. -->
+<koken:keyboard_scroll element="div.item" />
+
+<koken:include file="inc/footer.html" />

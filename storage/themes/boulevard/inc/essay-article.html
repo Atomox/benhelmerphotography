@@ -1,0 +1,48 @@
+<article>
+
+	<h1>
+		<koken:link>{{ essay.title }}</koken:link>
+	</h1>
+
+	<p class="meta">
+          <koken:time show="date" />&nbsp;&nbsp;/&nbsp;&nbsp;<koken:link>Permalink</koken:link>
+	</p>
+
+	{{ essay.content }}
+
+     <koken:if true="settings.essay_show_meta">
+
+     	<p class="data">
+     		<koken:topics>
+               <strong>Topics:</strong>
+               <koken:loop separator=", ">
+                    <koken:link>
+                         {{ album.title }}
+                    </koken:link>
+               </koken:loop>
+           &nbsp;&nbsp;/&nbsp;&nbsp;
+     	</koken:topics>
+
+     		<koken:categories>
+               <strong>Categories:</strong>
+               <koken:loop separator=", ">
+                    <koken:link>
+                         {{ category.title }}
+                    </koken:link>
+               </koken:loop>
+          &nbsp;&nbsp;/&nbsp;&nbsp;
+     	</koken:categories>
+
+     	<koken:tags>
+               <strong>Tags:</strong>
+               <koken:loop separator=", ">
+                    <koken:link>
+                         {{ tag.title }}
+                    </koken:link>
+               </koken:loop>
+     	</koken:tags>
+     	</p>
+
+     </koken:if>
+
+</article>

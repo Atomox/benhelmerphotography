@@ -1,0 +1,116 @@
+<koken:include file="inc/header.html" />
+
+<div id="content">
+
+	<!-- Load this template's source data (album), limit for pagination -->
+	<koken:load limit="30">
+
+		<!-- Add Facebook open graph metadata for nicer sharing -->
+		<koken:head>
+			<meta property="og:site_name" content="{{ site.title }}" />
+			<meta property="og:title" content="{{ album.title strip_html="true" }}" />
+			<meta property="og:description" content="{{ album.summary strip_html="true" }}" />
+			<meta property="og:type" content="website" />
+			<koken:loop data="album.covers">
+				<meta property="og:image" content="{{ content.presets.medium.url }}" />
+			</koken:loop>
+		</koken:head>
+
+		<!-- Displays links to neighbor albums, link back to albums index -->
+		<div id="content-pag">
+
+			<koken:previous>
+				<koken:link title="View {{ album.title }}">&larr; {{ album.title }}</koken:link>
+			</koken:previous>
+			&nbsp;
+			<koken:link to="albums">View all</koken:link>
+			&nbsp;
+			<koken:next>
+				<koken:link title="View {{ album.title }}">{{ album.title }} &rarr;</koken:link>
+			</koken:next>
+
+		</div>
+
+		<!-- Display the album's title -->
+		<h2>
+			{{ album.title }}
+		</h2>
+
+		<koken:link lightbox="true" class="button">View in lightbox</koken:link>
+
+		<!-- Display the album's description -->
+		{{ album.description paragraphs="true" }}
+
+		<!-- Display essays/pages written about this album -->
+		<koken:topics>
+			<p>
+				<strong>Related content:</strong>
+				<koken:loop separator=", ">
+					<koken:link>
+						{{ essay.title }}
+					</koken:link>
+				</koken:loop>
+			</p>
+		</koken:topics>
+
+		<!-- Display the album's categories -->
+		<koken:categories>
+			<p>
+				<strong>Categories:</strong>
+				<koken:loop separator=", ">
+					<koken:link>
+						{{ category.title }}
+					</koken:link>
+				</koken:loop>
+			</p>
+		</koken:categories>
+
+		<!-- Display the album's tags -->
+		<koken:tags>
+			<p>
+				<strong>Tags:</strong>
+				<koken:loop separator=", ">
+					<koken:link>
+						{{ tag.title }}
+					</koken:link>
+				</koken:loop>
+			</p>
+		</koken:tags>
+
+		<!-- If album is part of a set, display link to it -->
+		<koken:parent>
+			<p>
+				<strong>From the set:</strong> <koken:link title="View {{ album.title }}">
+				{{ album.title }}</koken:link>
+			</p>
+		</koken:parent>
+
+		<!-- Loop over all the items the album contains. Dislay photo, title and caption and link each to content.detail.lens -->
+		<koken:loop>
+			<!-- Displayed if the asset is an image -->
+			<koken:content_image>
+				<koken:link>
+					<koken:img />
+				</koken:link>
+			</koken:content_image>
+			<!-- Displayed if the asset is a video -->
+			<koken:content_video>
+				<koken:video />
+			</koken:content_video>
+			<h3><koken:link>{{ content.title | content.filename }}</koken:link></h3>
+			{{ content.caption paragraphs="true" }}
+		</koken:loop>
+
+		<!-- Paginate the results -->
+		<koken:include file="inc/pagination.html" />
+
+		<!-- Fallback content if no data was loaded by koken:load -->
+		<koken:else>
+
+			Nothing loaded
+
+	</koken:load>
+
+</div> <!-- close #content -->
+
+<koken:include file="inc/footer.html" />

@@ -1,0 +1,27 @@
+<koken:include file="layouts/header.html" />
+
+<koken:load limit="10">
+
+<div class="head">
+
+	<h1>{{ archive.type.plural }} / {{ archive.title }}</h1>
+
+</div>
+
+<div id="twocol" class="flip">
+
+	<koken:loop>
+
+		<koken:include file="layouts/article.html" />
+
+		<hr>
+
+	</koken:loop>
+
+</div>
+
+<koken:include file="layouts/pagination.html" />
+
+</koken:load>
+
+<koken:include file="layouts/footer.html" />

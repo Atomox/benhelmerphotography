@@ -1,0 +1,125 @@
+<koken:include file="layouts/header.html" />
+
+<koken:load>
+
+<koken:head>
+	<meta property="og:site_name" content="{{ site.title }}" />
+	<meta property="og:title" content="{{ album.title strip_html="true" }}" />
+	<meta property="og:description" content="{{ album.summary strip_html="true" }}" />
+	<meta property="og:type" content="website" />
+	<koken:loop data="album.covers">
+		<meta property="og:image" content="{{ content.presets.medium.url }}" />
+	</koken:loop>
+</koken:head>
+
+<koken:if true="settings.show_album_title">
+
+	<div id="album-title">
+		<h1>
+			{{ album.title }}
+		</h1>
+	</div>
+
+</koken:if>
+
+<koken:if true="settings.show_album_desc">
+
+	<div id="album-desc">
+		{{ album.description paragraphs="true" }}
+	</div>
+
+</koken:if>
+
+<ul id="slideshow-nav">
+	<li>
+		<a href="#" id="sldshw-prev" title="Previous">&larr;&nbsp;Prev</a>
+	</li>
+	<li>
+		<a href="#" id="sldshw-play" title="Pause">Pause</a>
+	</li>
+	<li>
+		<a href="#" id="sldshw-next" title="Next">Next&nbsp;&rarr;</a>
+	</li>
+</ul>
+
+<div id="slideshow-main">
+	<koken:pulse jsvar="pulse" next="#sldshw-next" previous="#sldshw-prev" toggle="#sldshw-play" />
+</div>
+
+<div id="slideshow-text">
+
+	<koken:if true="settings.show_title">
+
+	<h2>&nbsp;</h2>
+
+	</koken:if>
+
+	<koken:if true="settings.show_caption">
+
+	<p id="slideshow-caption">
+		&nbsp;
+	</p>
+
+	</koken:if>
+
+</div>
+
+<koken:if true="settings.social_bttns_show_album">
+
+	<div id="social-bttns">
+		<div class="cell left">
+			<div style="float:right;">
+				<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+			</div>
+		</div>
+		<div class="cell right">
+			<div style="float:left;">
+				<a class="addthis_button_tweet"></a>
+			</div>
+		</div>
+		<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+	</div>
+
+</koken:if>
+
+<script>
+	pulse.on( 'start', function() {
+		$('#sldshw-play').addClass('waiting');
+		playState(pulse.options.autostart);
+	});
+	pulse.on( 'dataloaded', function() {
+		$('#sldshw-play').removeClass('waiting');
+	});
+	pulse.on( 'playing', function(isPlaying) {
+		var el = $('#sldshw-play');
+		playState(isPlaying);
+	});
+	pulse.on( 'transitionstart', function(e) {
+		var data = e.data,
+			title = $('#slideshow-text h2'),
+			caption = $('#slideshow-caption');
+
+		if (title) {
+			title.html( data.title || data.filename );
+		}
+		if (caption) {
+			caption.html( data.caption );
+		}
+		$('#sldshw-play').removeClass('waiting');
+	});
+	pulse.on( 'waiting', function() {
+		$('#sldshw-play').addClass('waiting');
+	});
+	function playState(playing) {
+		var el = $('#sldshw-play');
+		if (playing) {
+			el.html('Pause');
+		} else {
+			el.html('Play');
+		}
+	}
+</script>
+
+</koken:load>
+
+<koken:include file="layouts/footer.html" />

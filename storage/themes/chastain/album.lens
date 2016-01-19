@@ -1,0 +1,134 @@
+<koken:include file="inc/header.html" />
+
+<koken:load infinite="true" limit="15">
+
+<koken:head>
+	<meta property="og:site_name" content="{{ site.title }}" />
+	<meta property="og:title" content="{{ album.title strip_html="true" }}" />
+	<meta property="og:description" content="{{ album.summary strip_html="true" }}" />
+	<meta property="og:type" content="website" />
+	<koken:loop data="album.covers">
+		<meta property="og:image" content="{{ content.presets.medium.url }}" />
+	</koken:loop>
+</koken:head>
+
+<div class="top">
+
+	<h4>{{ album.title }}</h4>
+
+	{{ album.description paragraphs="true" }}
+
+	<koken:if true="settings.social_bttns_show_album">
+		<koken:include file="inc/social-bttns.html" />
+	</koken:if>
+
+</div>
+
+<ul class="content-list">
+
+	<koken:loop>
+
+		<li>
+
+			<span class="img-wrap">
+
+				<koken:if true="settings.link_to_lightbox">
+
+					<koken:link lightbox="true" title="Click to view album in lightbox">
+
+						<koken:content_image>
+
+							<koken:img lazy="true" fade="true" class="content lbox" />
+
+						</koken:content_image>
+
+						<koken:content_video>
+
+							<koken:video />
+
+						</koken:content_video>
+
+					</koken:link>
+
+				<koken:else>
+
+					<koken:link title="Click to view album in lightbox">
+
+					<koken:content_image>
+
+							<koken:img lazy="true" fade="true" class="content lbox" />
+
+						</koken:content_image>
+
+						<koken:content_video>
+
+							<koken:video />
+
+						</koken:content_video>
+
+					</koken:link>
+
+				</koken:if>
+
+			</span>
+
+			<span class="img-data">
+
+				<span class="img-caption">
+					<koken:if true="settings.show_title">
+						<h4><koken:link>{{ content.title | content.filename }}</koken:link></h4>
+					</koken:if>
+					<koken:if true="settings.show_caption">
+						{{ content.caption paragraphs="true" }}
+					</koken:if>
+				</span>
+
+			</span>
+
+		</li>
+
+	</koken:loop>
+
+</ul>
+
+<div id="infinite_load_msg">
+	<span>Loading more...</span>
+</div>
+
+<koken:keyboard_scroll element="ul.content-list li" offset="-99" />
+
+<div class="bot">
+
+	<ul>
+		<li>
+			<span class="cell left">
+				<koken:previous>
+					<koken:link class="nav"><i class="icon-left-open-mini"></i> {{ album.title }}</koken:link>
+				</koken:previous>
+			</span>
+			<span class="cell">
+				<koken:link to="albums" class="nav">View all</koken:link>
+			</span>
+			<span class="cell right">
+				<koken:next>
+					<koken:link class="nav">{{ album.title }} <i class="icon-right-open-mini"></i> </koken:link>
+				</koken:next>
+			</span>
+		</li>
+	</ul>
+
+</div>
+
+</koken:load>
+
+<script>
+	$(window).on('k-infinite-loading', function() {
+		$('#infinite_load_msg').show();
+	});
+
+	$(window).on('k-infinite-loaded', function() {
+		$('#infinite_load_msg').hide();
+	});
+</script>
+
+<koken:include file="inc/footer.html" />
