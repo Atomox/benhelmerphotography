@@ -1,0 +1,54 @@
+
+/*
+  ALBUM
+ */
+.album-image {
+	color: #333;
+	margin: 1em 0;
+}
+
+.album-body h2,
+.albums-body h2{
+	font-size: 5em;
+	margin-top: 0em;
+	margin-bottom: 0em !important;
+	line-height: 1;
+}
+
+.album-body,
+.stream-body,
+.page-body,
+.article-body{
+	border-top: 1px dashed #eee;
+}
+
+.stream-body .nav-pills{
+	margin-top: 0em;
+}
+
+
+.album-body .album-image .title{
+	color: #777 !important;
+	font-weight: bold;
+	display:inline-block;
+}
+
+
+
+.album-image h3{
+	margin: 0em;
+}
+
+.album-body .album-image p.description{
+	font-weight: lighter;
+
+	/* Number of Columns */
+	-moz-column-count:2; /* Firefox */
+	-webkit-column-count:2; /* Safari and Chrome */
+	column-count:2;
+
+	/* Gutters between columns */
+	-moz-column-gap: 2em; /* Firefox */
+	-webkit-column-gap: 2em; /* Safari and Chrome */
+	column-gap: 2em;
+}

@@ -1,0 +1,13 @@
+body,html {
+	@extend .normal-12-black;
+	
+	background:#fff;
+	color:#000;
+	line-height:1.5; /* 21px */
+
+	font: 16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	margin:0em 2em 0em 2em;
+	text-align:center;
+	/* text-transform: uppercase; */
+	letter-spacing: 1px;
+}

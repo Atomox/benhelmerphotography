@@ -1,0 +1,18 @@
+@font-face {
+  font-famly: 'Helvetica Neue';
+  font-weight: normal;
+}
+
+
+
+@mixin sans-regular {
+  font-family: 'Helvetica Neue';
+  line-height: normal;
+}
+
+
+.normal-12-black {
+  @include sans-regular;
+  color: $black;
+  font-size: 12px;
+}

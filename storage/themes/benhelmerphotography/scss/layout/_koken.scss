@@ -1,0 +1,38 @@
+
+/*
+	Classes assigned to inserted media
+	See: http://help.koken.me/customer/portal/articles/828695-css-classes
+*/
+
+/* wrapper for inserted media */
+.k-content-embed {
+	margin:1em 0;
+}
+
+/* wrapper of the media asset itself */
+.k-content {
+	line-height:0; /* resolves html whitespace */
+	margin:0 0 1em 0;
+}
+
+/* wrapper for title/caption underneath photo/video, if turned on */
+.k-content-text {
+	padding:0 0 1em;
+}
+
+/* wrapper for the media's title */
+.k-content-title {
+	display:block;
+}
+
+/* wrapper for the media's caption */
+.k-content-caption {
+}
+
+/*
+	MORE CLASSES
+	See: http://help.koken.me/customer/portal/articles/828695-css-classes
+*/
+
+/* used for fallback text in console */
+.k-note {}

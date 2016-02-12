@@ -1,0 +1,21 @@
+
+@import '../foundation/functions';
+
+
+// b. Grid
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+$row-width: rem-calc(1220px);
+$total-columns: 12;
+$column-gutter: rem-calc(30px);
+
+
+// Screen Sizes
+$small-range: (0em, rem-calc(640px)) !default; // 0 - 640px
+$medium-range: (rem-calc(641px), rem-calc(1024px)) !default; // 641 - 1024px
+$large-ranger: (rem-calc(1025px), 99999999em) !default; // 1025px +
+
+
+// Colors:
+$black: #000000;
+$white: #FFFFFF;
+$light-gray: #CCCCCC;

@@ -1,0 +1,22 @@
+{
+  "name": "benhelmerphotography",
+  "version": "1.0.0",
+  "description": "Custom Koken Theme for BenHelmer.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Atomox@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "compass": "^0.1.1",
+    "grunt": "^0.4.5",
+    "grunt-contrib-sass": "^0.9.2",
+    "grunt-contrib-uglify": "^0.11.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "matchdep": "^1.0.0",
+    "node-sass": "^3.4.2",
+    "ruby": "^0.6.0",
+    "sass": "^0.5.0"
+  }
+}

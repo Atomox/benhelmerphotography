@@ -1,0 +1,42 @@
+
+footer.main {
+	padding:40px 0;
+	clear:both;
+	font-size: .85em;
+}
+
+footer.main .fine-print,
+footer.main .quote{
+	color: #ccc;
+}
+
+
+footer.main .fine-print a:visited,
+footer.main .fine-print a:link{
+	color: #ddd;
+}
+
+footer.main .fine-print a:hover,
+footer.main .fine-print a:active{
+	text-decoration: underline;
+	color: #777;
+}
+
+footer.main .quote .border-right{
+  border-right: 1px solid #eee;
+  @media #{$small-only} {
+    border-right: 0px;
+  }
+	padding-right: .25em;
+}
+
+footer.main .copyright {
+	color: #888;
+	padding: 0 1em .5em 1em;
+	margin-bottom: .5em;
+}
+
+footer.main a.social-media {
+  display: inline-block;
+  margin-right: .5em;
+}

@@ -13,49 +13,41 @@
 	<!-- Publishes dynamic page title in each template -->
 	<koken:title />
 
-  <!-- Bootstrap -->
-  <koken:asset file="bootstrap/css/bootstrap.min.css" />
-  <koken:asset file="bootstrap/js/bootstrap.min.js" />
-
   <!-- Font Awesome -->
   <koken:asset file="bootstrap/Font-Awesome/css/font-awesome.min.css" />
 
 	<!-- css -->
-	<koken:asset file="css/normalize.css" />
-	<koken:asset file="css/screen.css" />
+	<koken:asset file="css/benhelmer_photography.css" />
 
 </head>
 
 <body>
 
-	<div id="container" class="container">
+  <div class="row">
+    <div class="small-12 columns">
 
-		<header class="main">
+      <header class="main">
+        <div class="row">
+          <div class="small-12 medium-6 columns">
+              <!-- Site title editable in console Settings -->
+              <h1>
+                <koken:link to="front" title="Home">
+                  {{ site.title }}
+                  <koken:if true="settings.show_tagline">
+                    <span class="tagline"><koken:print data="site.tagline"></span>
+                  </koken:print></koken:if>
+                </koken:link>
+              </h1>
+              <!-- Site tagline editable in console Settings -->
+          </div>
+          <div class="small-12 medium-6 columns">
+              <nav>
+                <!-- Inserts primary navigation group -->
+                <koken:navigation />
+              </nav>
+          </div>
+        </div>
+      </header>
 
-			<div class="row">
-				<div class="span6">
-					<hgroup>
-						<!-- Site title editable in console Settings -->
-						<h1>
-							<koken:link to="front" title="Home">
-								{{ site.title }}
-								<koken:if true="settings.show_tagline">
-								  <span class="tagline"><koken:print data="site.tagline"></span>
-								</koken:print></koken:if>
-							</koken:link>
-						</h1>
-						<!-- Site tagline editable in console Settings -->
-
-					</hgroup>
-				</div>
-				<div class="span6">
-						<nav>
-							<!-- Inserts primary navigation group -->
-							<koken:navigation />
-						</nav>
-				</div>
-			</div>
-		</header>
-
-	<div class="row">
-		<div class="span12">
+    <div class="row">
+      <div class="small-12">

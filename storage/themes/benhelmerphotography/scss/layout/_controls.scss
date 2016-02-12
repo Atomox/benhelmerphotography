@@ -1,0 +1,60 @@
+
+/* Forward / Back Controls on Content Page. */
+.icon-left-open-mini:before { content: '\e761'; }
+.icon-right-open-mini:before { content: '\e762'; }
+.icon-left-open-big:before { content: '\e765'; }
+.icon-right-open-big:before { content: '\e766'; }
+
+span.img-wrap {
+	position:relative;
+	display:block;
+	line-height:0;
+}
+
+span.img-data {
+	width:60%;
+	display:inline-block;
+}
+
+span.img-pag a{
+	color:#eee;
+	padding: 2em 0em;
+	border-radius: 1em;
+}
+
+span.img-pag a:hover{
+	color:#333;
+}
+
+span.img-pag {
+	display:block;
+	position:absolute;
+	height:100%;
+	text-align:center;
+	z-index:1;
+	font-size: 3em;
+}
+
+span.img-pag.left a{
+	padding-right: 1em;
+}
+
+span.img-pag.left {
+	top:0;
+	left: -3em;
+}
+
+span.img-pag.right a{
+	padding-left: 1em;
+}
+
+span.img-pag.right {
+	top:0;
+	right: -2em;
+}
+
+span.img-pag span {
+	position:absolute;
+	top:50%;
+	margin-top:-18px;
+}
