@@ -11428,7 +11428,6 @@ body, html {
   /* 21px */
   font: 16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   margin: 0em 2em 0em 2em;
-  text-align: center;
   /* text-transform: uppercase; */
   letter-spacing: 1px;
 }
@@ -11455,7 +11454,6 @@ header.main h1 .tagline {
 nav {
   /* Highlight navigation link for current page - assigned automatically by Koken */
   letter-spacing: 2px;
-  margin-top: 10px;
   float: right;
 }
 nav ul {
