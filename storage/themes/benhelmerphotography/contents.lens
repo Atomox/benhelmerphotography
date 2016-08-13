@@ -6,57 +6,94 @@
 	<koken:load limit="30">
 
 		<div class="row">
-			<div class="span6">
+			<div class="medium-6 column">
 				<h2>All Photos / Stream</h2>
 			</div>
-			<div class="span6">
+
+			<div class="medium-6 column">
 				<ul class="nav nav-pills" style="float: right;">
   				<li class="dropdown">
-					  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-calendar"></i> by date <b class="caret"></b></a>
-					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<!-- Links to content archived by date, categories and tags -->
-							<koken:load source="archives" summary="true" limit_to="content">
-								<koken:loop>
-									<li>
-										<koken:link to="archive_contents">
-											{{ title }}&nbsp;({{ counts.content }})
-										</koken:link>
-									</li>
-								</koken:loop>
-							</koken:load>
-						</ul>
+  					<!-- -->
+            <button class="button" type="button" data-toggle="dropdown-filter-date">
+              <i class="icon-calendar"></i> by date <b class="caret"></b>
+            </button>
+            
+            <div class="dropdown-pane" id="dropdown-filter-date" data-dropdown data-auto-focus="true">
+              Photos by Date
+              
+              <div class="row">
+                <ul class="medium-6 columns">
+                  <!-- Links to content archived by date, categories and tags -->
+                  <koken:load source="archives" summary="true" limit_to="content">
+                    <koken:loop>
+                      <li>
+                        <koken:link to="archive_contents">
+                          {{ title }}&nbsp;({{ counts.content }})
+                        </koken:link>
+                      </li>
+                    </koken:loop>
+                  </koken:load>                    
+                </ul>
+              </div>  
+            </div>
+          <!-- -->
 					</li>
 
 					<li class="dropdown">
-					  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-book"></i> by category <b class="caret"></b></a>
-					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<koken:load source="categories" summary="true" limit_to="content" order_by="content_count">
-								<koken:loop>
-									<li>
-										<koken:link to="archive_contents">
-											{{ title }}&nbsp;({{ counts.content }})
-										</koken:link>
-									</li>
-								</koken:loop>
-							</koken:load>
-						</ul>
+					  <!-- -->
+            <button class="button" type="button" data-toggle="dropdown-filter-categories">
+              <i class="icon-book"></i> by category <b class="caret"></b>
+            </button>
+            
+            <div class="dropdown-pane" id="dropdown-filter-categories" data-dropdown data-auto-focus="true">
+              Photos by Subject
+              
+              <div class="row">
+                <ul class="medium-6 columns">
+                  <koken:load source="categories" summary="true" limit_to="content" order_by="content_count">
+                    <koken:loop>
+                      <li>
+                        <koken:link to="archive_contents">
+                          {{ title }}&nbsp;({{ counts.content }})
+                        </koken:link>
+                      </li>
+                    </koken:loop>
+                  </koken:load>
+                </ul>
+              </div>
+              
+            </div>
+            <!-- -->
 					</li>
 
 					<li class="dropdown">
-					  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-tags"></i> by tag <b class="caret"></b></a>
-					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<koken:load source="tags" summary="true" limit_to="content" order_by="content_count">
-							<koken:loop>
-								<li>
-									<koken:link to="archive_contents">
-										{{ title }}&nbsp;({{ counts.content }})
-									</koken:link>
-								</li>
-							</koken:loop>
-						</koken:load>
-						</ul>
+					  <!-- -->
+            <button class="button" type="button" data-toggle="dropdown-filter-tags">
+              <i class="icon-book"></i> by category <b class="caret"></b>
+            </button>
+            
+            <div class="dropdown-pane" id="dropdown-filter-tags" data-dropdown data-auto-focus="true">
+              Photos by Tag
+              
+              <div class="row">
+                <ul class="medium-6 columns">
+                  <koken:load source="tags" summary="true" limit_to="content" order_by="content_count">
+                    <koken:loop>
+                      <li>
+                        <koken:link to="archive_contents">
+                          {{ title }}&nbsp;({{ counts.content }})
+                        </koken:link>
+                      </li>
+                    </koken:loop>
+                  </koken:load>    
+                </ul>
+              </div>
+              
+            </div>
+            <!-- -->
 					</li>
 				</ul>
+        
 			</div>
 		</div>
 
@@ -66,13 +103,13 @@
 
 				<!-- wrapper used for keyboard navigation targetting -->
 				<div class="row item stream-item">
-					<div class="span9">
+					<div class="medium-9 columns">
 						<koken:link title="View {{ content.filename }}">
 							<koken:img lazy="true" fade="true" />
 						</koken:link>
 						<koken:keyboard_scroll element="div.stream-item" offset="10" />
 					</div>
-					<div class="span3">
+					<div class="medium-3 columns">
 						<h2>
 							<koken:link title="View {{ content.filename }}">
 								{{ content.title | content.filename }}

@@ -4,54 +4,57 @@
   	<footer class="main">
 
   		<div class="row">
-  			<div class="small-12 medium-offset-1 medium-7 columns quote">
+  			<div class="small-12 medium-offset-1 medium-5 large-7 columns quote">
   				<div class="border-right">
   					<i class="icon-quote-left"></i>
   					You do not need to leave your room. Remain sitting at your table and listen. Do not even listen, simply wait, be quiet, still and solitary. The world will freely offer itself to you to be unmasked, it has no choice, it will roll in ecstasy at your feet. ~Franz Kafka
   				</div>
   			</div>
 
-  			<div class="small-12 medium-4 columns">
+  			<div class="small-12 medium-6 large-4 small-centered medium-uncentered columns">
   				<!-- Outputs the site copyright. Editable in console Settings -->
-  				<div class="copyright">
+  				<div class="">
 
-  					<!-- Outputs link to publisher's Facebook page, if available. -->
-  					<koken:profile_facebook>
-  					  <a href="{{ profile.facebook }}" class="social-media">
-  					    <i class="fa fa-facebook"></i> Facebook
-  					  </a>
-  					</koken:profile_facebook>
+            <div class="row collapse social-media-copyright">
+              <div class="small-12 columns">
+                <!-- Outputs link to publisher's Facebook page, if available. -->
+                <koken:profile_facebook>
+                  <a href="{{ profile.facebook }}" class="social-media">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </koken:profile_facebook>
 
-  					<!-- Outputs link to publisher's Twitter page, if available. -->
-  					<koken:profile_twitter>
-  					  <a href="http://twitter.com/{{ profile.twitter }}" class="social-media">
-  					    <i class="fa fa-twitter"></i> Twitter
-  					  </a>
-  					</koken:profile_twitter>
+                <!-- Outputs link to publisher's Twitter page, if available. -->
+                <koken:profile_twitter>
+                  <a href="http://twitter.com/{{ profile.twitter }}" class="social-media">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </koken:profile_twitter>
 
+                <!-- Outputs link to publisher's Flickr page, if available -->
+                <a href="http://flickr.com/photos/{{ profile.twitter }}" class="social-media">
+                  <i class="fa fa-flickr"></i>
+                </a>
 
-  					<!-- Outputs link to publisher's Flickr page, if available -->
-  				  <a href="http://flickr.com/photos/{{ profile.twitter }}" class="social-media">
-              <i class="fa fa-flickr"></i> Flickr
-  				  </a>
+                <!-- Outputs link to publisher's Tumblr page, if available -->
+                <a href="http://{{ profile.twitter }}.tumblr.com" class="social-media">
+                  <i class="fa fa-tumblr"></i>
+                </a>
 
-            <!-- Outputs link to publisher's Tumblr page, if available -->
-            <a href="http://{{ profile.twitter }}.tumblr.com" class="social-media">
-              <i class="fa fa-tumblr"></i> Tumblr
-            </a>
-
-            <!-- Outputs link to publisher's Instagram page, if available -->
-            <a href="https://www.instagram.com/ben_helmer_photography/" class="social-media">
-              <i class="fa fa-instagram"></i> Instagram
-            </a>
-
-  				  <br/>
-
-  				  {{ site.copyright }}. <br/>
-
-  				  <span class="fine-print">
-  					  Powered by <a href="http://http://koken.me/">Koken</a>. Hosted on <a href="http://mediatemple.net/">(mt)</a>.
-  					</span>
+                <!-- Outputs link to publisher's Instagram page, if available -->
+                <a href="https://www.instagram.com/ben_helmer_photography/" class="social-media">
+                  <i class="fa fa-instagram"></i>
+                </a>
+              </div>
+              <div class="small-12 columns">
+                <span class="copyright">
+                  Design & Content {{ site.copyright }}, {{ year }}.
+                </span>
+              </div>
+              <div class="small-12 columns fine-print">
+    					  Powered by <a href="http://http://koken.me/">Koken</a>. Hosted on <a href="http://mediatemple.net/">(mt)</a>.
+    					</div>
+            </div>
   			  </div>
   			</div>
   		</div>

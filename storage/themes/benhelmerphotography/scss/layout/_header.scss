@@ -15,29 +15,29 @@ header.main {
       color: #ccc;
     }
   }
-  margin-top: 1em;
-  margin-bottom: 0.4em;
-  float:center;
-}
+  nav {
+    ul {
+      margin:0;
+      padding:0;
+      font-size: rem-calc(13px);
 
-
-
-nav {
-  ul {
-    margin:0;
-    padding:0;
-
-    li {
-      display:inline-block;
-      margin:0 0 0 15px;
+      li {
+        display:inline-block;
+        margin:0 0 0 15px;
+      }
     }
-  }
-  
-  /* Highlight navigation link for current page - assigned automatically by Koken */
-  a.k-nav-current {
-    color:#333;
+    
+    /* Highlight navigation link for current page - assigned automatically by Koken */
+    a.k-nav-current {
+      color:#333;
+    }
+
+    margin-top: 1rem;
+    letter-spacing: 2px;
+    float: right;
   }
 
-  letter-spacing: 2px;
-  float: right;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+  float:center;
 }

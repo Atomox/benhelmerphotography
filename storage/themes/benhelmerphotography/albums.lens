@@ -9,10 +9,10 @@
 			<koken:loop>
 
 				<!-- wrapper used for keyboard navigation targetting -->
-				<div class="item span3">
+				<div class="item small-6 medium-4 large-3 column">
 
 					<koken:link>
-						<koken:img size="medium" width="300" fade="true" lazy="true" />
+						<koken:img respond_to="width" fade="true" lazy="true" crop="true"/>
 					</koken:link>
 
 					<div class="text">

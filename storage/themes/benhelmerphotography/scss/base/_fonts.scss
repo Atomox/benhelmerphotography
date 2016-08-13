@@ -16,3 +16,10 @@
   color: $black;
   font-size: 12px;
 }
+
+
+.normal-10-medium-gray {
+  @include sans-regular;
+  color: $medium-gray;
+  font-size: 12px;
+}

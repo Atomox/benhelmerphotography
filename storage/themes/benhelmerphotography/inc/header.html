@@ -19,16 +19,19 @@
 	<!-- css -->
 	<koken:asset file="css/benhelmer_photography.css" />
 
+  <!-- js -->
+  <koken:asset file="js/vendor/jquery.js" />   
+  <koken:asset file="js/foundation.min.js" />
+
 </head>
 
 <body>
 
   <div class="row collapse">
     <div class="small-12 columns">
-
       <header class="main">
         <div class="row collapse">
-          <div class="small-12 medium-6 columns">
+          <div class="small-12 medium-6 small-centered medium-uncentered columns">
               <!-- Site title editable in console Settings -->
               <h1>
                 <koken:link to="front" title="Home">
@@ -40,7 +43,7 @@
               </h1>
               <!-- Site tagline editable in console Settings -->
           </div>
-          <div class="small-12 medium-6 columns">
+          <div class="small-12 medium-6 small-centered medium-uncentered columns">
               <nav>
                 <!-- Inserts primary navigation group -->
                 <koken:navigation />
@@ -48,6 +51,6 @@
           </div>
         </div>
       </header>
-
-    <div class="row">
-      <div class="small-12">
+    </div>
+    <div class="row collapse">
+      <div class="small-12 medium-12 columns">

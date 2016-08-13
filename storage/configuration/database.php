@@ -5,11 +5,10 @@
     // Local development.
     case 'local.benhelmer.com':
       $KOKEN_DATABASE = array(
-        'driver' => 'mysqli',
-        'hostname' => 'localhost',
-        'database' => 'db166727_koken',
-        'username' => 'db166727',
-        'password' => 'Koken16572i657zrqt',
+        'hostname' => '127.0.0.1',
+        'database' => 'benhelmer',
+        'username' => 'koken',
+        'password' => 'koken',
         'prefix' => 'koken_',
         'socket' => ''
       );

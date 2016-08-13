@@ -11,6 +11,10 @@
 	font-size: 2em;
 }
 
+img {
+	/* max-height: 90vh; */
+}
+
 .description-columns p:first-child{
 	font-size:1.25em;
 	font-weight: lighter;
@@ -35,16 +39,36 @@
 	column-gap: 2em;
 }
 
+
+.content-sub-controls {
+  h3 {
+    text-align: center;
+    display: block;
+    font-size: 2em;
+    color: #aaa;
+    font-weight: lighter;
+    margin: 0em 0 .15em 0;
+  }
+
+  display: inline-block;
+  font-size: rem-calc(12px);
+  float: right;
+  text-align: center;
+  min-width: 250px;
+  margin-top: .5em;
+}
+
+
 .album-image .photo-details,
 .stream-item .photo-details,
-.photo-details .span3{
-	color: #888;
-	font-size: .95em;
+.photo-details {
+  @extend .normal-10-medium-gray;
 }
 
 ul.image-details{
 	list-style-type: none;
 	padding: 0 0 0 2em;
+	margin: 0em;
 }
 
 .content-body .navigation{

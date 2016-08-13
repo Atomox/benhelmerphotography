@@ -30,7 +30,7 @@
 		</koken:head>
 
 		<div class="row">
-			<div class="span12">
+			<div class="small-12">
 
 					<!-- Displayed if the asset is an image -->
 					<koken:content_image>
@@ -71,10 +71,10 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="span12">
+			<div class="small-12 columns">
 
 				<!-- Display pagination links -->
-				<div id="content-pag">
+				<div id="content-pag" class="right content-sub-controls">
 					<!-- Checks to see if content has a parent album. If so, label pagination links differently -->
 					<koken:parent>
 						<koken:variable name="previous_label" value="" />
@@ -122,7 +122,7 @@
 		</div>
 
 		<div class="row">
-			<div class="span9 offset2 photo-description">
+			<div class="medium-9 medium-offset-2 columns photo-description">
 
 				<!-- Display the content title -->
 				<h2>
@@ -137,45 +137,46 @@
 			</div>
 		</div>
 		<div class="row photo-details">
-			<div class="span3 offset2">
+			<div class="medium-3 medium-offset-2 columns">
 
 				<!-- Display uploaded date -->
 				<!-- <p><strong>Uploaded:</strong> {{ content.uploaded_on }}</p> -->
 
 				<strong>About this Photo</strong>
 				<!-- Display captured date -->
-				<p>
-					<i class="icon-calendar"></i> Taken on {{ content.captured_on date_only="true" }}
-				</p>
+        <p>
+  				<i class="icon-calendar"></i> Taken on {{ content.captured_on date_only="true" }}
+        </p>
 
 				<!-- Display assigned categories -->
 				<koken:categories>
-					<p>
-						<i class="icon-book"></i>
-						<koken:loop separator=", ">
-							<koken:link>
-								{{ category.title }}
-							</koken:link>
-						</koken:loop>
-					</p>
+          <p>
+					<i class="icon-book"></i>
+					<koken:loop separator=", ">
+						<koken:link>
+							{{ category.title }}
+						</koken:link>
+					</koken:loop>
+          </p>
 				</koken:categories>
 
 			    <!-- Display assigned tags -->
 				<koken:tags>
-					<p class="tags">
+					<div class="tags">
 						<i class="icon-tags"></i>
 						<koken:loop separator=", ">
 							<koken:link>
 								{{ tag.title }}
 							</koken:link>
 						</koken:loop>
-					</p>
+					</div>
 				</koken:tags>
 			</div>
-			<div class="span3">
+			<div class="medium-3 columns">
 				<!-- Display EXIF data -->
 				<koken:exif>
 					<strong>Exif</strong>
+          <p>
 					<ul class="exif image-details">
 						<koken:not empty="exif.model">
 							<li><i class="icon-camera"></i> {{ exif.model }}</li>
@@ -193,9 +194,10 @@
 							<li><i class="icon-circle-blank"></i> {{ exif.iso_speed_ratings }}</li>
 						</koken:not>
 					</ul>
+          </p>
 				</koken:exif>
 			</div>
-			<div class="span3">
+			<div class="medium-3 columns end">
 				<strong>Additional Details</strong>
 
 				<ul class="image-details">
