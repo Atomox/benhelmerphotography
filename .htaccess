@@ -6,6 +6,11 @@
 # 	RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 # </IfModule>
 
+# Attempt to bypass error:
+# libgomp: Thread creation failed: Resource temporarily unavailable
+# Seemingly caused by multiple threads of imageMagick while processing very large photos.
+SetEnv MAGICK_THREAD_LIMIT 1
+
 ####### DO NOT EDIT BELOW THIS LINE ########
 
 #MARK#######################################
