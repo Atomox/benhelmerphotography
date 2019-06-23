@@ -1194,6 +1194,34 @@
 
 </script>
 
+<script id="form_recaptcha" type="text/html">
+
+	<table class="ui-sheet-table" data-bind="attr: { id: prefix + setting.key }">
+		<thead>
+			<tr class="fields-data-row">
+				<td>
+					<label>
+						<input data-bind="checked: setting.value[0], event: { change: function() { $('#' + prefix + setting.key + ' tbody').toggle(); } }" type="checkbox" />
+						Google reCaptcha
+					</label>
+					<a href="http://help.koken.me/customer/en/portal/articles/1914327-insert-contact-forms#recaptcha" target="_blank" class="help fright">More Info</a>
+				</td>
+			</tr>
+		<thead>
+		<tbody data-bind="visible: setting.value[0]">
+			<!-- ko foreach: setting.fields -->
+			<!-- ko if: $index() !== 0 -->
+			<tr class="fields-data-row">
+				<td>
+					<input class="field wide" data-bind="value: $parent.setting.value[$index()], valueUpdate: 'afterkeydown', attr: { 'placeholder': placeholder }" type="text" />
+				</td>
+			</tr>
+			<!-- /ko -->
+			<!-- /ko -->
+		</tbody>
+	</table>
+</script>
+
 <script id="form_boolean" type="text/html">
 	<input type="checkbox" value="true" data-bind="event: { change: function() { setting.value = $('#' + prefix + 'option_' + setting.key).is(':checked'); } }, checked: $data.setting.values ? setting.value === setting.values['true'] : setting.value === true || (setting.value !== false && setting.value !== 'false'), attr: { 'data-send-as': setting.send_as || '', 'data-default-value': setting.default || setting.value ? 'true' : 'false', name: setting.key, id: prefix + 'option_' + setting.key }" />
 </script>

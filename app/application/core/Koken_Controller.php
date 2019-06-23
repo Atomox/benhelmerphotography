@@ -219,7 +219,7 @@ class Koken_Controller extends CI_Controller {
 			{
 				$this->auth = true;
 				list($this->auth_user_id, $this->auth_token, $this->auth_role) = $auth;
-				if (strpos($this->cache_path, '/token:') === false)
+				if (strpos($this->cache_path, '/token:') === false && isset($this->auth_token))
 				{
 		    		$this->cache_path .= '/token:' . $this->auth_token;
 				}
@@ -355,7 +355,7 @@ class Koken_Controller extends CI_Controller {
 
 		if ($token && $token ===  $this->config->item('encryption_key'))
 		{
-			return true;
+			return array(null, $token, null);
 		}
 		else if ($token)
 		{
@@ -556,7 +556,9 @@ class Koken_Controller extends CI_Controller {
 		}
 		else
 		{
-			$protocol = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http';
+			$protocol = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ||
+				$_SERVER['SERVER_PORT'] == 443 ||
+				(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ? 'https' : 'http';
 			$url = $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim($s->value, '/') . '/__rewrite_test/';
 		}
 

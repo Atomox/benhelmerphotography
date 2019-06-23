@@ -12,8 +12,9 @@ class KokenAPI {
 
 		$this->curl = curl_init();
 
-		$is_ssl = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 : $_SERVER['SERVER_PORT'] == 443;
-		$this->protocol = $is_ssl ? 'https' : 'http';
+		$this->protocol = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ||
+			$_SERVER['SERVER_PORT'] == 443 ||
+			(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ? 'https' : 'http';
 	}
 
 	public function get($url)
@@ -44,7 +45,7 @@ class KokenAPI {
 				$host = $_SERVER['HTTP_HOST'];
 			}
 
-			$url = $this->protocol . '://' . $host . preg_replace('~/(app/site/site|(api|i))\.php.*~', "/api.php?$url", $_SERVER['SCRIPT_NAME']);
+			$url = $this->protocol . '://' . $host . preg_replace('~/(app/site/site|(api|i|a))\.php.*~', "/api.php?$url", $_SERVER['SCRIPT_NAME']);
 
 			curl_setopt($this->curl, CURLOPT_URL, $url);
 			curl_setopt($this->curl, CURLOPT_HEADER, 0);

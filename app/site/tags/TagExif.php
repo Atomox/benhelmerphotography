@@ -16,7 +16,7 @@
 	if (isset({$token}['exif']) && !empty({$token}['exif'])):
 
 		$ref = array( 'exif' => array() );
-		{$ref}['__loop__'] =& {$token}['exif'];
+		{$ref}['__loop__'] = {$token}['exif'];
 
 		foreach({$token}['exif'] as \$__arr)
 		{

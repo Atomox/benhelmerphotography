@@ -1,12 +1,13 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * Code Igniter
+ * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
  * @package		CodeIgniter
- * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @author		EllisLab Dev Team
+ * @copyright		Copyright (c) 2008 - 2014, EllisLab, Inc.
+ * @copyright		Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
  * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
@@ -19,7 +20,7 @@
  * Database Utility Class
  *
  * @category	Database
- * @author		ExpressionEngine Dev Team
+ * @author		EllisLab Dev Team
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_forge {
@@ -97,6 +98,16 @@ class CI_DB_forge {
 	 */
 	function add_key($key = '', $primary = FALSE)
 	{
+		// if (is_array($key))
+		// {
+		// 	foreach ($key as $one)
+		// 	{
+		// 		$this->add_key($one, $primary);
+		// 	}
+
+		// 	return;
+		// }
+
 		if ($key == '')
 		{
 			show_error('Key information is required for that operation.');

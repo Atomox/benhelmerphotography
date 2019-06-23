@@ -599,8 +599,9 @@ class Sites extends Koken_Controller {
 				return $nested;
 			}
 
-			function build_autos($items, $data, $user)
+			function build_autos($items, $data, $user, $routes = NULL, $templates = NULL)
 			{
+
 				foreach($items as $index => &$item)
 				{
 					if (isset($item['auto']))
@@ -609,7 +610,15 @@ class Sites extends Koken_Controller {
 						{
 							$item['path'] = $data['urls'][$item['auto']];
 						}
-						else if ($item['auto'] === 'set')
+						else if (is_array($routes) &&
+							is_array($templates) &&
+							isset($routes[$item['auto']]) &&
+							isset($templates[$item['auto']]['name']) )
+						{
+							$item['path'] = $routes[$item['auto']];
+							$item['label'] = $templates[$item['auto']]['name'];
+						}
+						else if ($item['auto'] === 'set' || $item['auto'] === 'custom')
 						{
 							$item['path'] = '';
 						}
@@ -873,9 +882,18 @@ class Sites extends Koken_Controller {
 
 			$template_info['navigation']['items_nested'] = nest($template_info['navigation']['items'], $template_info['routes'], $albums_indexed, $album_keys, $ceiling);
 
+			$template_routes = array();
+			foreach($template_info['routes'] as $index => $route)
+			{
+				if (isset($route['template']) && is_string($index))
+				{
+					$template_routes[$route['template']] = $index;
+				}
+			}
+
 			foreach($template_info['navigation']['groups'] as &$group)
 			{
-				$group['items'] = build_autos($group['items'], $data, $user);
+				$group['items'] = build_autos($group['items'], $data, $user, $template_routes,  $template_info['templates']);
 				$group['items_nested'] = nest($group['items'], $template_info['routes'], $albums_indexed, $album_keys, $ceiling);
 			}
 			$pages = array();

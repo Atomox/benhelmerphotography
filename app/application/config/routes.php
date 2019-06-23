@@ -47,6 +47,7 @@ $route['albums/((?:[0-9]+)|(?:slug:[^/]+)|[0-9a-z]{32})/(content|covers)(/(.*))?
 $route['albums/tree(:any)?'] = "albums/tree$1";
 $route['albums/(:any)'] = "albums/index/$1";
 $route['content/cache/?'] = "contents/cache";
+$route['content/cache/(:any)'] = "contents/cache/$1";
 $route['content/([\d\,]+)/(albums|categories)(/.*)?'] = "contents/$2/$1$3";
 $route['content/(unlisted|private)(/(.*))?'] = "contents/index/visibility:$1$2";
 $route['content(/(.*))?'] = "contents/index/$1";

@@ -9,14 +9,69 @@ class Contents extends Koken_Controller {
 
     function cache()
     {
+    	list($params, $id) = $this->parse_params(func_get_args());
+
     	if ($this->method === 'delete')
     	{
     		$c = new Content;
     		$c->update('file_modified_on', time());
 
     		Shutter::clear_cache('images');
+    		Shutter::clear_cache('albums');
     		Shutter::clear_cache('icc');
     	}
+    	else if ($this->method === 'post')
+    	{
+    		$page = isset($params['page']) ? (int) $params['page'] : 1;
+
+    		$c = new Content;
+    		$contents = $c->get_paged_iterated($page, 1);
+
+				if (extension_loaded('curl'))
+				{
+					$presets = array('medium', 'medium_large', 'large', 'xlarge');
+					$options = array(
+						CURLOPT_HTTPHEADER => array(
+							'Connection: Close',
+							'Keep-Alive: 0',
+						),
+						CURLOPT_HEADER => 0,
+						CURLOPT_CONNECTTIMEOUT => 10,
+						CURLOPT_RETURNTRANSFER => 1,
+						CURLOPT_SSL_VERIFYHOST => 2,
+						CURLOPT_SSL_VERIFYPEER => false,
+					);
+
+					foreach($contents as $c)
+					{
+						$content = $c->to_array();
+
+						foreach ($presets as $preset)
+						{
+							$curl = curl_init();
+							curl_setopt_array($curl, $options);
+							curl_setopt($curl, CURLOPT_URL, $content['presets'][$preset]['url']);
+							$r = curl_exec($curl);
+							curl_close($curl);
+
+							if (preg_match('/^.?large$/', $preset) === 0)
+							{
+								$curl = curl_init();
+								curl_setopt_array($curl, $options);
+								curl_setopt($curl, CURLOPT_URL, $content['presets'][$preset]['cropped']['url']);
+								$r = curl_exec($curl);
+								curl_close($curl);
+							}
+						}
+					}
+
+					die(json_encode(array(
+						'total_pages' => $contents->paged->total_pages,
+						'next_page' => $contents->paged->has_next ? $contents->paged->next_page : false,
+					)));
+				}
+    	}
+
     	exit;
     }
 
@@ -400,6 +455,19 @@ class Contents extends Koken_Controller {
 						$c->_before();
 					}
 
+					if (isset($from['max_download']) && $id)
+					{
+						$a = new Album();
+						$albums = $a->where_related('content', 'id', $id)->get_iterated();
+						$start = strtotime(gmdate("M d Y H:i:s", time()));
+						foreach($albums as $a)
+						{
+							$a->update(array(
+								'modified_on' => $start
+							), false);
+						}
+					}
+
 					$from = Shutter::filter("api.$hook", array_merge($from, array('id' => $id, 'file' => isset($path) ? $path : $c->path_to_original() )));
 
 					unset($from['file']);
@@ -690,10 +758,11 @@ class Contents extends Koken_Controller {
 						{
 							$next_operator = strtolower($options['context_order_direction']) === 'desc' ? '<' : '>';
 							$prev_operator = $next_operator === '<' ? '>' : '<';
+							$val = $options['context_order'] === 'title' && is_null($content->{$options['context_order']}) ? '' : $content->{$options['context_order']};
 
 							$next
 								->group_start()
-									->where($options['context_order'] . " $next_operator", $content->{$options['context_order']})
+									->where($options['context_order'] . " $next_operator", $val)
 									->or_group_start()
 										->where($options['context_order'], $content->{$options['context_order']})
 										->where("id $next_operator", $content->id)
@@ -702,7 +771,7 @@ class Contents extends Koken_Controller {
 
 							$prev
 								->group_start()
-									->where($options['context_order'] . " $prev_operator", $content->{$options['context_order']})
+									->where($options['context_order'] . " $prev_operator", $val)
 									->or_group_start()
 										->where($options['context_order'], $content->{$options['context_order']})
 										->where("id $prev_operator", $content->id)
@@ -725,7 +794,7 @@ class Contents extends Koken_Controller {
 					}
 					else
 					{
-						if (!isset($options['context_order']))
+						if (empty($options['context_order']))
 						{
 							$options['context_order'] = 'captured_on';
 							$options['context_order_direction'] = 'DESC';

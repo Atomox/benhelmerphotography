@@ -1,5 +1,7 @@
 <?php
 
+define('ENVIRONMENT', 'production');
+
 require_once('lib/autolink.php');
 
 class Koken {
@@ -8,6 +10,7 @@ class Koken {
 	public static $language = array();
 	public static $profile;
 	public static $location = array();
+	public static $template_routes = array();
 	public static $rss_feeds = array();
 	public static $current_token;
 	public static $rss;
@@ -66,7 +69,14 @@ META;
 		if (strpos($name, '.') !== false)
 		{
 			$parts = explode('.', $name);
-			return Koken::$settings['__scoped_' . str_replace('.', '-', $parts[1]) . '_' . $parts[0]];
+			if ($parts[0] === 'language')
+			{
+				return Koken::$language[$parts[1]];
+			}
+			else
+			{
+				return Koken::$settings['__scoped_' . str_replace('.', '-', $parts[1]) . '_' . $parts[0]];
+			}
 		}
 		else
 		{
@@ -89,7 +99,6 @@ META;
 				$format = 'F j, Y';
 			}
 			$str = str_replace('-01 ', '-' . $archive['day'] . ' ', $str);
-			$archive = date($format, strtotime($str));
 		}
 		else
 		{
@@ -97,6 +106,14 @@ META;
 			{
 				$format = 'F Y';
 			}
+		}
+
+		if (class_exists('IntlDateFormatter') && isset(self::$settings['language']) && self::$settings['language'] !== 'en') {
+			$df = new IntlDateFormatter(self::$settings['language'], IntlDateFormatter::NONE, IntlDateFormatter::NONE);
+			$df->setPattern(self::to_date_field_symbol($format));
+
+			$archive = $df->format(strtotime($str));
+		} else {
 			$archive = date($format, strtotime($str));
 		}
 
@@ -165,6 +182,8 @@ META;
 					break;
 				case 's':
 					$dfs .= 'ss';
+					break;
+				case 'S':
 					break;
 				default:
 					$dfs .= $c;
@@ -437,8 +456,18 @@ META;
 		$output = preg_replace_callback('/(<|\s)(\/)?koken\:([a-z_\-]+)([\=|\s][^\/].+?")?(\s*\/)?>/', array('Koken', 'callback'), $template);
 		$output = preg_replace('/\{\{\s*discussion\s*\}\}/', '<?php Shutter::hook(\'discussion\', array(Koken::$current_token)); ?>', $output);
 		$output = preg_replace('/\{\{\s*discussion_count\s*\}\}/', '<?php Shutter::hook(\'discussion_count\', array(Koken::$current_token)); ?>', $output);
+		$output = preg_replace('/\{\{\s*rating\s*\}\}/', '<?php Shutter::hook(\'rating\', array(Koken::$current_token)); ?>', $output);
 		$output = preg_replace_callback('/\{\{\s*([^\}]+)\s*\}\}/', array('Koken', 'out_callback'), $output);
 		return $output;
+	}
+
+	public static function find_protocol()
+	{
+		$protocol = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ||
+			$_SERVER['SERVER_PORT'] == 443 ||
+			(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ? 'https' : 'http';
+
+		return $protocol;
 	}
 
 	private static function attr_callback($matches)
@@ -664,7 +693,7 @@ META;
 		return $out;
 	}
 
-	private static function prep_api($url)
+	private static function prep_api($url, $cache = true)
 	{
 		if (strpos($url, 'api.php?') !== false)
 		{
@@ -683,7 +712,9 @@ META;
 
 		$url = Shutter::filter('site.api_url', $url);
 
-		$cache = Shutter::get_cache('api' . $url);
+		if ($cache) {
+			$cache = Shutter::get_cache('api' . $url);
+		}
 
 		if ($cache)
 		{
@@ -695,7 +726,7 @@ META;
 		}
 	}
 
-	private static function curl_setup($url, $curl = false)
+	private static function curl_setup($url, $curl = false, $method = 'GET', $params = array())
 	{
 		if (!$curl)
 		{
@@ -727,6 +758,27 @@ META;
 		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+		$method = strtoupper($method);
+		if ($method === 'POST')
+		{
+			// If its an array (instead of a query string) then format it correctly
+			if (is_array($params))
+			{
+				$params = http_build_query($params, NULL, '&');
+			}
+
+			curl_setopt($curl, CURLOPT_POST, TRUE);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+		}
+
+		if (ENVIRONMENT === 'development')
+		{
+			curl_setopt($curl, CURLOPT_COOKIE, 'XDEBUG_SESSION=PHPSTORM');
+			curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0);
+			curl_setopt($curl, CURLOPT_TIMEOUT, 0);
+		}
 
 		if (self::$protocol === 'https')
 		{
@@ -762,7 +814,7 @@ META;
 		return true;
 	}
 
-	public static function api($url)
+	public static function api($url, $method = 'GET', $params = array())
 	{
 		if (is_array($url))
 		{
@@ -861,7 +913,8 @@ META;
 		}
 		else
 		{
-			$data = self::prep_api($url);
+			$cache = $method !== 'POST';
+			$data = self::prep_api($url, $cache);
 
 			if (!is_array($data))
 			{
@@ -871,7 +924,7 @@ META;
 					self::$curl_handle = curl_init();
 				}
 
-				$curl = self::curl_setup($data, self::$curl_handle);
+				$curl = self::curl_setup($data, self::$curl_handle, $method, $params);
 
 				$start = microtime(true);
 				$data = json_decode( curl_exec($curl), true );
@@ -1595,6 +1648,11 @@ META;
 			}
 
 			if ($image) {
+				if (strpos($image, 'http') !== 0)
+				{
+					$image = Koken::$location['site_url'] . $image;
+				}
+
 				$image = urlencode(str_replace(',', '/', $image));
 			}
 
@@ -1727,6 +1785,10 @@ META;
 					{
 						$url = self::$location['urls'][$options['to']];
 					}
+					else if (isset(self::$template_routes[$options['to']]))
+					{
+						$url = self::$template_routes[$options['to']];
+					}
 					else
 					{
 						$url = '/';
@@ -1827,15 +1889,8 @@ META;
 
 		if ($options['echo'])
 		{
-			if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
-			{
-				$prefix = 'https:';
-			}
-			else
-			{
-				$prefix = 'http:';
-			}
-			$url = $prefix . '//' . $_SERVER['HTTP_HOST'] . $url;
+			$protocol = self::find_protocol();
+			$url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $url;
 			echo $url;
 		}
 		else
@@ -3101,7 +3156,7 @@ META;
 
 			$dt = date('c', $timestamp);
 
-			if (class_exists('IntlDateFormatter') && isset(self::$settings['language'])) {
+			if (class_exists('IntlDateFormatter') && isset(self::$settings['language']) && self::$settings['language'] !== 'en') {
 				$df = new IntlDateFormatter(self::$settings['language'], IntlDateFormatter::NONE, IntlDateFormatter::NONE);
 				$df->setPattern(self::to_date_field_symbol($f));
 

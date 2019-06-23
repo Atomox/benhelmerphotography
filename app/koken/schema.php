@@ -697,10 +697,11 @@
 					'constraint' => 255
 				),
 				'live_data' => array(
-					'type' => 'TEXT'
+					'type' => 'MEDIUMTEXT',
+					'null' => true
 				),
 				'data' => array(
-					'type' => 'TEXT'
+					'type' => 'MEDIUMTEXT'
 				),
 				'current' => array(
 					'type' => 'TINYINT',

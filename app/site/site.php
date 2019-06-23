@@ -1,7 +1,7 @@
 <?php
 
 	error_reporting(0);
-	define('KOKEN_VERSION', '0.21.9');
+	define('KOKEN_VERSION', '0.22.24');
 	define('BASEPATH', true);
 
 	ini_set('default_charset', 'UTF-8');
@@ -180,10 +180,6 @@
 
 	$ds = DIRECTORY_SEPARATOR;
 
-	$is_ssl = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 : $_SERVER['SERVER_PORT'] == 443;
-	$protocol = $is_ssl ? 'https' : 'http';
-	$original_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . preg_replace('/\?.*$/', '', $_SERVER['SCRIPT_NAME']) . '?' . $url;
-
 	if ($url === '/')
 	{
 		$cache_url = '/index';
@@ -227,6 +223,9 @@
 	}
 
 	require 'Koken.php';
+
+	$protocol = Koken::find_protocol();
+	$original_url = $protocol . '://' . $_SERVER['HTTP_HOST'] . preg_replace('/\?.*$/', '', $_SERVER['SCRIPT_NAME']) . '?' . $url;
 
 	Koken::start();
 	Koken::$protocol = $protocol;
@@ -438,6 +437,14 @@
 	Koken::$site = $site_api;
 	Koken::$profile = Koken::$site['profile'];
 	Koken::$location['theme_path'] = $real_base_folder . '/storage/themes/' . $site_api['theme']['path'];
+
+	foreach(Koken::$site['routes'] as $route)
+	{
+		if (isset($route['template']) && isset($route['path']))
+		{
+			Koken::$template_routes[$route['template']] = $route['path'];
+		}
+	}
 
 	foreach($categories['categories'] as $c)
 	{
@@ -652,6 +659,11 @@
 			{
 				$contents .= file_get_contents($root_path . $src);
 			}
+		}
+
+		$lang = isset(Koken::$site['settings_flat']['language']['value']) ? Koken::$site['settings_flat']['language']['value'] : false;
+		if ($lang && $lang !== 'en') {
+			$contents .= file_get_contents(Koken::get_path("common/js/timeago/locales/jquery.timeago.{$lang}.js"));
 		}
 
 		$contents .= join("\n", Shutter::get_site_scripts());
@@ -995,10 +1007,15 @@
 
 			foreach(Koken::$site['templates'] as $template)
 			{
-				if ($template['path'] === $default_path && isset($template['info']['source']))
+				if ($template['path'] === $default_path)
 				{
-					Koken::$source = array( 'type' => $template['info']['source'], 'filters' => false );
-					Koken::$page_class = 'k-source-' . $template['info']['source'];
+					Koken::$page_class = 'k-lens-' . Koken::$location['template'];
+
+					if (isset($template['info']['source']))
+					{
+						Koken::$source = array( 'type' => $template['info']['source'], 'filters' => false );
+						Koken::$page_class .= ' k-source-' . $template['info']['source'];
+					}
 					break;
 				}
 
@@ -1009,8 +1026,7 @@
 
 	if (isset($final_path))
 	{
-		$https = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
-		$protocol = "http".$https;
+		$protocol = Koken::find_protocol();
 		$port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);
 
 		header("X-XHR-Current-Location: " . $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI']);
@@ -1029,8 +1045,8 @@
 			}
 		}
 
-		$lang = isset(Koken::$settings['language']) ? Koken::$settings['language']: 'en';
-		Koken::$language = Koken::$site['language'][$lang];
+		Koken::$settings['language'] = isset(Koken::$settings['language']) ? Koken::$settings['language'] : 'en';
+		Koken::$language = Koken::$site['language'][Koken::$settings['language']];
 
 		Koken::$rss = preg_match('/\.rss$/', $final_path);
 
@@ -1224,6 +1240,10 @@
 						{
 							$if = str_replace('settings.', '', $value);
 						}
+						else if ($name === 'version')
+						{
+							$version = $value;
+						}
 						else
 						{
 							$passthrough[] = "$name=\"$value\"";
@@ -1259,7 +1279,19 @@
 								return '';
 							}
 
-							$buster = Koken::$site['theme']['version'];
+							if (isset($version) && $version !== 'false')
+							{
+								if ($version === 'true')
+								{
+									$buster = Koken::$site['theme']['version'];
+								}
+								else
+								{
+									$buster = $version;
+								}
+
+								$path .= '?' . $buster;
+							}
 						}
 					}
 				}
@@ -1373,7 +1405,7 @@
 
 						if (Koken::$has_video)
 						{
-							$me = "\n\n\t<link href=\"{$location['real_root_folder']}/app/site/themes/common/css/mediaelement/mediaelementplayer.min.css{$stamp}\" rel=\"stylesheet\">\n";
+							$me = "\n\n\t<link href=\"{$location['real_root_folder']}/app/site/themes/common/css/mediaelement/mediaelementplayer.css{$stamp}\" rel=\"stylesheet\">\n";
 						}
 						else
 						{
@@ -1384,7 +1416,7 @@
 	<meta name="generator" content="$generator" />
 	<meta name="theme" content="$theme" />$me
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="{$location['real_root_folder']}/app/site/themes/common/js/jquery.min.js"><\/script>')</script>
 	<script src="{$koken_js}"></script>
 	<script>\$K.location = $.extend(\$K.location, $location_json);</script>

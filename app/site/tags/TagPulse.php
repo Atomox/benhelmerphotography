@@ -26,7 +26,10 @@
 		function generate()
 		{
 
-			$options = array( 'group' => 'default' );
+			$options = array(
+				'group' => 'default',
+				'relative' => true,
+			);
 			$disabled = array();
 
 			$group_wrap = '<?php echo "default"; ?>';
@@ -164,6 +167,28 @@
 			\$__native_raw['dataUrl'] = preg_replace('~slug:[^/]+~', 'slug:' . Koken::\$current_token['album']['internal_id'], \$__native_raw['dataUrl']);
 		}
 	}
+
+	if (isset(\$__native_raw['data']['content']))
+	{
+		foreach(\$__native_raw['data']['content'] as &\$__item)
+		{
+			if (isset(\$__item['cache_path']))
+			{
+				if ('{$options['relative']}')
+				{
+					foreach(\$__item['presets'] as &\$__preset)
+					{
+						\$__preset['url'] = str_replace(\$__item['cache_path']['prefix'], \$__item['cache_path']['relative_prefix'], \$__preset['url']);
+						\$__preset['hidpi_url'] = str_replace(\$__item['cache_path']['prefix'], \$__item['cache_path']['relative_prefix'], \$__preset['url']);
+					}
+
+					\$__item['cache_path']['prefix'] = \$__item['cache_path']['relative_prefix'];
+				}
+				unset(\$__item['cache_path']['relative_prefix']);
+			}
+		}
+	}
+
 
 	\$__native = array_merge( \$__native_raw, isset(Koken::\$site['pulse_groups'][\$__group]) ? Koken::\$site['pulse_groups'][\$__group] : array() );
 	if (\$__group === 'essays' && isset(\$__native_raw['link_to']) && \$__native_raw['link_to'] !== 'default')

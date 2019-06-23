@@ -72,6 +72,7 @@
 		\$__dls = array_reverse(\$__dls);
 		$ref = \$__dls[0];
 		{$ref}['max_download'] =& $ref;
+		{$ref}['content'] = $token;
 		{$ref}['__loop__'] = \$__dls;
 ?>
 OUT;

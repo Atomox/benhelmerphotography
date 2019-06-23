@@ -24,6 +24,34 @@ class BD_Shortcodes extends KokenPlugin {
 				header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
 				exit;
 			}
+			else if (!empty($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-key']))
+			{
+				$gRecaptchaResponse = $_POST['g-recaptcha-response'];
+				$secret_key = $_POST['g-recaptcha-key'];
+
+				$key = Shutter::get_encryption_key();
+				$secret_key = base64_decode($secret_key);
+				$iv = substr($secret_key, 0, 16);
+				$secret_key = substr($secret_key, 16);
+				$secret_key = openssl_decrypt($secret_key, 'AES-256-CTR', $key, 0, $iv);
+
+				if (isset($secret_key))
+				{
+					require(Koken::$root_path . '/app/application/libraries/ReCaptcha/autoload.php');
+					$recaptcha = new \ReCaptcha\ReCaptcha($secret_key);
+					$resp = $recaptcha->verify($gRecaptchaResponse);
+
+					if (!$resp->isSuccess()) {
+						header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+						exit;
+					}
+				}
+			}
+			else if (!isset($_POST['g-recaptcha-response'], $_POST['g-recaptcha-key']) && !isset($_POST['k-contact-field-dummy']))
+			{
+				header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+				exit;
+			}
 
 			// convert unicode escaped to utf-8
 			$labels = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
@@ -118,12 +146,37 @@ HTML;
 HTML;
 		}
 
+		list($recaptcha, $site_key, $secret_key) = json_decode($attr['recaptcha']);
+
+		if ($recaptcha)
+		{
+			$key = Shutter::get_encryption_key();
+			$iv = openssl_random_pseudo_bytes(16);
+			$secret_key = openssl_encrypt($secret_key, 'AES-256-CTR', $key, 0, $iv);
+			$secret_key = base64_encode($iv . $secret_key);
+			$required[] = 'g-recaptcha-response';
+
+			$out .= <<<HTML
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<fieldset class="k-contact-form-captcha-field k-contact-form-required-field">
+	<label>Captcha</label>
+	<div class="g-recaptcha" data-sitekey="{$site_key}"></div>
+	<input type="hidden" name="g-recaptcha-key" value="{$secret_key}" />
+</fieldset>
+HTML;
+		}
+		else
+		{
+			$out .= <<<HTML
+<input type="text" name="k-contact-field-dummy" style="display:none" />
+HTML;
+		}
+
 		$required = json_encode($required);
 		$labels = json_encode($labels);
 
 		$out .= <<<HTML
 <fieldset class="k-contact-form-submit">
-	<input type="text" name="k-contact-field-dummy" style="display:none" />
 	<input type="hidden" name="labels" value='$labels' />
 	<input type="hidden" name="from_field" value="$fromEmail" />
 	<button type="submit">{$attr['button_label']}</button>
@@ -226,10 +279,22 @@ HTML;
 		if ($attr['media_type'] === 'image')
 		{
 			$tag = 'img lazy="true"';
+
+			if (isset($attr['height']) && is_numeric($attr['height']))
+			{
+				$tag .= ' height="' . $attr['height'] . '"';
+			}
 		}
 		else
 		{
 			$tag = 'video';
+		}
+
+		$fig_style = '';
+		if (isset($attr['width']) && is_numeric($attr['width']))
+		{
+			$tag .= ' width="' . $attr['width'] . '"';
+			$fig_style = ' style="width:' . $attr['width'] . 'px;"';
 		}
 
 		$text = '';
@@ -278,7 +343,7 @@ HTML;
 		}
 
 		return <<<HTML
-<figure class="k-content-embed">
+<figure class="k-content-embed" ${fig_style}>
 	<koken:load source="content" filter:id="{$attr['id']}"$context_param>
 		<div class="k-content">
 			$link_pre

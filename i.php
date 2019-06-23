@@ -9,14 +9,14 @@
 
 	$root = dirname(__FILE__);
 
+	@include $root . '/storage/configuration/user_setup.php';
+	require $root . '/app/koken/Shutter/Shutter.php';
+	require $root . '/app/koken/Utils/KokenAPI.php';
+
 	if (!defined('LOOPBACK_HOST_HEADER'))
 	{
 		define('LOOPBACK_HOST_HEADER', false);
 	}
-
-	@include $root . '/storage/configuration/user_setup.php';
-	require $root . '/app/koken/Shutter/Shutter.php';
-	require $root . '/app/koken/Utils/KokenAPI.php';
 
 	Shutter::enable();
 	Shutter::hook('image.boot');
@@ -354,7 +354,7 @@
 		header('Content-type: image/' . $ext);
 		header('Content-length: ' . strlen($blob));
 
-		echo $blob;
+		die($blob);
 	}
 	else if ($base64)
 	{

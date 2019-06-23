@@ -48,7 +48,7 @@ class DDI_Cache extends KokenPlugin implements KokenCache {
 
 			if (!$is_api || $mtime > $cache_stamp)
 			{
-				if (is_int($lastModified) && strtotime($lastModified) >= $mtime) {
+				if ($lastModified && strtotime($lastModified) && is_int($mtime) && strtotime($lastModified) >= $mtime) {
 					return array(
 						'status' => 304
 					);

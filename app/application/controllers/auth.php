@@ -97,7 +97,7 @@ class Auth extends Koken_Controller {
 				'role' => $application->role,
 				'user' => $application->user->first_name . ' ' . $application->user->last_name,
 				'host' => $_SERVER['HTTP_HOST'],
-				'ssl' => isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1)
+				'ssl' => (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || $_SERVER['SERVER_PORT'] == 443 || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'),
 			);
 		}
 		else

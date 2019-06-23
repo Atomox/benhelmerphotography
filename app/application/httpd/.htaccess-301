@@ -44,6 +44,11 @@ DirectoryIndex index.php index.html
 	RewriteCond %{REQUEST_URI} storage/cache/images(/(([0-9]{3}/[0-9]{3})|custom)/.*)$
 	RewriteRule . i.php?path=%1 [L]
 
+	# Pass albums requests back to PHP if they do not exist
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_URI} storage/cache/albums(/([0-9]{3}/[0-9]{3})/.*)$
+	RewriteRule . a.php?path=%1 [L]
+
 	# Redirect everything else to custom site path
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d

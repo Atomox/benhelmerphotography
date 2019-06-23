@@ -33,18 +33,17 @@ class Album extends Koken {
 	function repair_tree()
 	{
 		$query = <<<Q
-SELECT  *
-FROM    {$this->table} mto
-WHERE   EXISTS
-        (
-        SELECT  1
-        FROM    {$this->table} mti
-        WHERE   mti.left_id = mto.left_id
-        AND mti.deleted = mto.deleted
-        AND mti.visibility = mto.visibility
-        LIMIT 1, 1
-        )
-ORDER BY left_id ASC, album_type ASC, id ASC
+SELECT	*
+FROM		{$this->table} mto
+INNER		JOIN (
+					SELECT left_id,visibility, deleted FROM {$this->table}
+					GROUP BY left_id, visibility, deleted HAVING count(id) > 1
+					LIMIT 1
+				) mti
+				ON 	mto.left_id = mti.left_id
+				AND mto.visibility = mti.visibility
+				AND mto.deleted = mti.deleted
+ORDER BY mto.left_id ASC, album_type ASC, id ASC
 LIMIT 1
 Q;
 
@@ -58,14 +57,12 @@ Q;
 
 		$keep = $dupes->all[0];
 
-		$diff = ($keep->right_id - $keep->left_id) + 1;
-
 		$this->where('visibility', $keep->visibility)
 			 ->where('deleted', $keep->deleted)
 			 ->where('right_id >=', $keep->right_id)
 			 ->where('id !=', $keep->id)
 			 ->update(array(
-				'right_id' => "right_id + $diff",
+				'right_id' => "right_id + 1",
 			 ), false);
 
 		$this->where('visibility', $keep->visibility)
@@ -73,7 +70,7 @@ Q;
 			 ->where('left_id >=', $keep->left_id)
 			 ->where('id !=', $keep->id)
 			 ->update(array(
-				'left_id' => "left_id + $diff",
+				'left_id' => "left_id + 1",
 			 ), false);
 
 		return $this->repair_tree();
@@ -1167,6 +1164,7 @@ Q;
 						{
 							$this->delete($content);
 							$this->delete_cover($content);
+							$this->update('modified_on', time());
 							$this->save();
 							$this->reset_covers();
 						}
@@ -1311,7 +1309,7 @@ Q;
 
 		$exclude = array('deleted', 'total_count', 'video_count', 'featured_order', 'tags_old', 'old_slug');
 		$dates = array('created_on', 'modified_on', 'featured_on', 'published_on');
-		$strings = array('title', 'summary', 'description');
+		$strings = array('title', 'summary', 'description', 'koken_password_protect_password');
 
 		$bools = array('featured');
 

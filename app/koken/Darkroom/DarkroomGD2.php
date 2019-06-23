@@ -16,6 +16,10 @@ class DarkroomGD2 extends Darkroom {
 		}
 	}
 
+	public function getQuality() {
+		return 100;
+	}
+
 	public function rotate($path, $degrees)
 	{
 		$this->createSource($path);

@@ -16,7 +16,7 @@
 	if (isset({$token}['iptc']) && !empty({$token}['iptc'])):
 
 		$ref = array( 'iptc' => array() );
-		{$ref}['__loop__'] =& {$token}['iptc'];
+		{$ref}['__loop__'] = {$token}['iptc'];
 
 		foreach({$token}['iptc'] as \$__arr)
 		{

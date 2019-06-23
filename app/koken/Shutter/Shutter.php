@@ -20,7 +20,8 @@ class Shutter {
 		'images' => false,
 		'locks' => false,
 		'plugins' => false,
-		'icc' => false
+		'icc' => false,
+		'albums' => false,
 	);
 
 	private static $email_provider = false;
@@ -199,11 +200,21 @@ class Shutter {
 	public static function get_oembed($url)
 	{
 		if (!defined('FCPATH')) return false; // Shouldn't be called outside of API context
+		$parts = parse_url($url);
+		parse_str($parts['query'], $query);
 
-		$parts = explode('url=', $url);
-		$url = $parts[0] . 'url=' . urlencode($parts[1]);
+		$qs = array();
+
+		foreach($query as $arg => $val)
+		{
+			$qs[] = $arg . '=' . urlencode($val);
+		}
+
+		$parts = explode('?', $url);
+		$url = $parts[0] . '?' . implode('&', $qs);
 
 		$url = preg_replace('~^http://www\.flickr\.com~', 'https://www.flickr.com', $url);
+		$url = preg_replace('~^http://api\.instagram\.com/oembed\?~', 'https://api.instagram.com/oembed/?', $url);
 
 		$hash = md5($url) . '.oembed.cache';
 		$cache = FCPATH . 'storage' . DIRECTORY_SEPARATOR .
@@ -638,7 +649,7 @@ class Shutter {
 		{
 			if ($target === 'all')
 			{
-				$target = array('site', 'api', 'core', 'images', 'locks', 'plugins', 'icc');
+				$target = array('site', 'api', 'core', 'images', 'locks', 'plugins', 'icc', 'albums');
 			}
 
 			if (!is_array($target))

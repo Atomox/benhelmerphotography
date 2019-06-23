@@ -38,7 +38,7 @@
 		return TRUE;
 	}
 
-	$movers = array('admin', 'app', 'api.php', 'i.php', 'index.php', 'preview.php', 'dl.php');
+	$movers = array('admin', 'app', 'api.php', 'i.php', 'index.php', 'preview.php', 'dl.php', 'a.php');
 
 	foreach($movers as $m) {
 		$to = dirname(__FILE__) . '/' . $m;

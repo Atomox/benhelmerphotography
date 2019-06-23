@@ -165,7 +165,7 @@ class Content extends Koken {
 
 	// Multibyte safe unserialization for cray cray EXIF/IPTC junk
 	function _unserialize($string) {
-		$original = utf8_decode($string);
+		$original = MB_ENABLED ? mb_convert_encoding($string, 'ISO-8859-1') : utf8_decode($string);
 		$string = preg_replace_callback('!s:(\d+):"(.*?)";!s',
 			create_function('$matches', 'return "s:" . strlen($matches[2]) . ":\"" . $matches[2] . "\";";'), $original);
 		$mb = @unserialize($string);
@@ -285,11 +285,11 @@ class Content extends Koken {
 
 	function _force_utf($string)
 	{
-		if (!function_exists('mb_detect_encoding')) return $string;
+		if (!MB_ENABLED) return $string;
 
 		if (mb_detect_encoding($string) !== 'UTF-8')
 		{
-			return utf8_encode($string);
+			return mb_convert_encoding($string, 'UTF-8');
 		}
 
 		return $string;
@@ -374,6 +374,14 @@ class Content extends Koken {
 					}
 					$this->title = $this->_force_utf($iptc['2#005']);
 				}
+				else if (isset($iptc['2#105']))
+				{
+					if (is_array($iptc['2#105']))
+					{
+						$iptc['2#105'] = $iptc['2#105'][0];
+					}
+					$this->title = $this->_force_utf($iptc['2#105']);
+				}
 
 				if (isset($iptc['2#120']))
 				{
@@ -415,6 +423,40 @@ class Content extends Koken {
 					unlink($midsize);
 				}
 
+				$orientation = isset($exif['IFD0']['Orientation']) ? $exif['IFD0']['Orientation'] : false;
+
+				if (in_array($orientation, array(3, 6, 8), true))
+				{
+					include_once(FCPATH . 'app' . DIRECTORY_SEPARATOR . 'koken' . DIRECTORY_SEPARATOR . 'DarkroomUtils.php');
+
+					$s = new Setting;
+					$s->where('name', 'image_processing_library')->get();
+
+					$d = DarkroomUtils::init($s->value);
+
+					switch ($orientation)
+					{
+						case 3:
+							$degrees = 180;
+							break;
+						case 6:
+							$degrees = 90;
+							break;
+						case 8:
+							$degrees = 270;
+							break;
+					}
+
+					$d->rotate($path, $degrees);
+
+					if ($orientation !== 3)
+					{
+						// swap values
+						$width = $this->width;
+						list($this->width, $this->height) = array($this->height, $width);
+					}
+				}
+
 				if ($longest > 1600)
 				{
 					include_once(FCPATH . 'app' . DIRECTORY_SEPARATOR . 'koken' . DIRECTORY_SEPARATOR . 'DarkroomUtils.php');
@@ -424,9 +466,12 @@ class Content extends Koken {
 
 					$d = DarkroomUtils::init($s->value);
 
+					$quality = $d->read($path)->getQuality();
+					$quality = empty($quality) ? 100 : $quality;
+
 					$d->read($path, $this->width, $this->height)
 					  ->resize(1600)
-					  ->quality(100)
+					  ->quality($quality)
 					  ->render($midsize);
 
 					$external = Shutter::store_original($midsize, $this->path . '/' . basename($midsize));
@@ -713,6 +758,7 @@ class Content extends Koken {
 		$koken_url_info = $this->config->item('koken_url_info');
 		$prefix = $info['filename'];
 		$cache_base = $koken_url_info->base . (KOKEN_REWRITE ? 'storage/cache/images' : 'i.php?') . '/custom/' . $prefix . '-' . $info['extension'] . '/';
+		$relative_cache_base = str_replace($koken_url_info->base, $koken_url_info->relative_base, $cache_base);
 
 		$data = array(
 			'__koken__' => 'content',
@@ -724,6 +770,7 @@ class Content extends Koken {
 			'aspect_ratio' => $this->aspect_ratio,
 			'cache_path' => array(
 				'prefix' => $cache_base,
+				'relative_prefix' => $relative_cache_base,
 				'extension' => $this->file_modified_on . '.' . $info['extension']
 			),
 			'presets' => array()
@@ -921,9 +968,11 @@ class Content extends Koken {
 				}
 
 				$cache_base = $koken_url_info->base . (KOKEN_REWRITE ? 'storage/cache/images' : 'i.php?') . '/' . str_replace('\\', '/', $this->cache_path) . '/' . $prefix . ',';
+				$relative_cache_base = str_replace($koken_url_info->base, $koken_url_info->relative_base, $cache_base);
 
 				$data['cache_path'] = array(
-					'prefix' => $cache_base
+					'prefix' => $cache_base,
+					'relative_prefix' => $relative_cache_base,
 				);
 
 				$data['cache_path']['extension'] = $data['file_modified_on']['timestamp'] . '.' . $info['extension'];
@@ -1351,6 +1400,10 @@ class Content extends Koken {
 				'field' => "IFD0.Model",
 				'core' => true
 			),
+			'lens_make' => array(
+				'label' => 'Lens make',
+				'field' => "EXIF.LensMake"
+			),
 			'image_description' => array(
 				'label' => 'Description',
 				'field' => "IFD0.ImageDescription"
@@ -1361,6 +1414,12 @@ class Content extends Koken {
 				'divide' => true,
 				'pre' => 'f/',
 				'core' => true
+			),
+			'aperture_max' => array(
+				'label' => 'Max aperture',
+				'field' => "EXIF.MaxApertureValue",
+				'divide' => true,
+				'pre' => 'f/'
 			),
 			'exposure' => array(
 				'label' => 'Exposure',
@@ -1379,12 +1438,25 @@ class Content extends Koken {
 				'label' => 'Exposure mode',
 				'field' => "EXIF.ExposureMode",
 				'values' => array(
-					0 => 'Easy shooting',
-					1 => 'Program',
-					2 => 'Shutter priority',
-					3 => 'Aperture priority',
-					4 => 'Manual',
-					5 => 'A-DEP'
+					0 => 'Auto',
+					1 => 'Manual',
+					2 => 'Auto bracket'
+				)
+			),
+			'exposure_program' => array(
+				'label' => 'Exposure program',
+				'field' => "EXIF.ExposureProgram",
+				'values' => array(
+					0 => 'Not Defined',
+					1 => 'Manual',
+					2 => 'Program AE',
+					3 => 'Aperture-priority AE',
+					4 => 'Shutter speed priority AE',
+					5 => 'Creative (Slow speed)',
+					6 => 'Action (High speed)',
+					7 => 'Portrait',
+					8 => 'Landscape',
+					9 => 'Bulb'
 				)
 			),
 			'date_time_original' => array(
@@ -1465,6 +1537,43 @@ class Content extends Koken {
 					5 => 'Flash',
 					6 => 'Custom',
 					129 => 'Manual'
+				)
+			),
+			'light_source' => array(
+				'label' => 'Light source',
+				'field' => 'EXIF.LightSource',
+				'values' => array(
+					0 => 'Unknown',
+					1 => 'Daylight',
+					2 => 'Fluorescent',
+					3 => 'Tungsten (Incandescent)',
+					4 => 'Flash',
+					9 => 'Fine Weather',
+					10 => 'Cloudy',
+					11 => 'Shade',
+					12 => 'Daylight Fluorescent',
+					13 => 'Day White Fluorescent',
+					14 => 'Cool White Fluorescent',
+					15 => 'White Fluorescent',
+					16 => 'Warm White Fluorescent',
+					17 => 'Standard Light A',
+					18 => 'Standard Light B',
+					20 => 'D55',
+					21 => 'D65',
+					22 => 'D75',
+					23 => 'D50',
+					24 => 'ISO Studio Tungsten',
+					255 => 'Other'
+				)
+			),
+			'scene_capture_type' => array(
+				'label' => 'Scene capture type',
+				'field' => 'EXIF.SceneCaptureType',
+				'values' => array(
+					0 => 'Standard',
+					1 => 'Landscape',
+					2 => 'Portrait',
+					3 => 'Night'
 				)
 			)
 		);
@@ -1713,7 +1822,7 @@ class Content extends Koken {
 		}
 		if (is_numeric($options['limit']) && $options['limit'] > 0)
 		{
-			$options['limit'] = min($options['limit'], 100);
+			$options['limit'] = min($options['limit'], 500);
 		}
 		else
 		{
@@ -1877,7 +1986,7 @@ class Content extends Koken {
 		// Do this before date filters are applied
 		$bounds = $this->get_clone()
 					->select('COUNT(DISTINCT ' . $this->table . '.id) as count, MONTH(FROM_UNIXTIME(' . $bounds_order . $shift . ')) as month, YEAR(FROM_UNIXTIME(' . $bounds_order . $shift . ')) as year')
-					->group_by('month,year')
+					->group_by('id,month,year')
 					->order_by('year')
 					->get_iterated();
 

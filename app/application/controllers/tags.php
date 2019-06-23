@@ -56,70 +56,77 @@ class Tags extends Koken_Controller {
 				$t->get_by_id($id);
 			}
 
-			$tag_array = $t->to_array();
-
-			$params['tag'] = $t->id;
-			$params['tag_slug'] = $t->name;
-			list($final, $counts) = $this->aggregate('tag', $params);
-
-			$final['counts'] = $counts;
-			$final = array_merge($tag_array, $final);
-
-			$prev = new Tag;
-			$next = new Tag;
-
-			$prev->where('id !=', $t->id);
-			$next->where('id !=', $t->id);
-
-			if ($params['context_order'] === 'count')
+			if (!$t->exists())
 			{
-				$prev->group_start();
-					$prev->where_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count', '>', $t->essay_count + $t->album_count + $t->content_count), null);
-					$prev->or_group_start();
-						$prev->where_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count', '=', $t->essay_count + $t->album_count + $t->content_count), null);
-						$prev->where('name <', $t->name);
-					$prev->group_end();
-				$prev->group_end();
-
-				$next->group_start();
-					$next->where_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count', '<', $t->essay_count + $t->album_count + $t->content_count), null);
-					$next->or_group_start();
-						$next->where_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count', '=', $t->essay_count + $t->album_count + $t->content_count), null);
-						$next->where('name >', $t->name);
-					$next->group_end();
-				$next->group_end();
-
-				$prev->order_by_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count'), 'ASC');
-				$next->order_by_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count'), 'DESC');
+				$final = array();
 			}
 			else
 			{
-				$prev->where('name <', $t->name);
-				$next->where('name >', $t->name);
-			}
+				$tag_array = $t->to_array();
 
-			$prev->order_by('name DESC');
-			$next->order_by('name ASC');
+				$params['tag'] = $t->id;
+				$params['tag_slug'] = $t->name;
+				list($final, $counts) = $this->aggregate('tag', $params);
 
-			$max = $next->get_clone()->count();
-			$min = $prev->get_clone()->count();
+				$final['counts'] = $counts;
+				$final = array_merge($tag_array, $final);
 
-			$final['context'] = array();
-			$final['context']['total'] = $max + $min + 1;
-			$final['context']['position'] = $min + 1;
-			$final['context']['previous'] = $final['context']['next'] = false;
+				$prev = new Tag;
+				$next = new Tag;
 
-			$prev->get();
-			$next->get();
+				$prev->where('id !=', $t->id);
+				$next->where('id !=', $t->id);
 
-			if ($prev->exists())
-			{
-				$final['context']['previous'] = $prev->to_array();
-			}
+				if ($params['context_order'] === 'count')
+				{
+					$prev->group_start();
+						$prev->where_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count', '>', $t->essay_count + $t->album_count + $t->content_count), null);
+						$prev->or_group_start();
+							$prev->where_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count', '=', $t->essay_count + $t->album_count + $t->content_count), null);
+							$prev->where('name <', $t->name);
+						$prev->group_end();
+					$prev->group_end();
 
-			if ($next->exists())
-			{
-				$final['context']['next'] = $next->to_array();
+					$next->group_start();
+						$next->where_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count', '<', $t->essay_count + $t->album_count + $t->content_count), null);
+						$next->or_group_start();
+							$next->where_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count', '=', $t->essay_count + $t->album_count + $t->content_count), null);
+							$next->where('name >', $t->name);
+						$next->group_end();
+					$next->group_end();
+
+					$prev->order_by_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count'), 'ASC');
+					$next->order_by_func('', array('@content_count', '+', '@text_count',  '+',  '@album_count'), 'DESC');
+				}
+				else
+				{
+					$prev->where('name <', $t->name);
+					$next->where('name >', $t->name);
+				}
+
+				$prev->order_by('name DESC');
+				$next->order_by('name ASC');
+
+				$max = $next->get_clone()->count();
+				$min = $prev->get_clone()->count();
+
+				$final['context'] = array();
+				$final['context']['total'] = $max + $min + 1;
+				$final['context']['position'] = $min + 1;
+				$final['context']['previous'] = $final['context']['next'] = false;
+
+				$prev->get();
+				$next->get();
+
+				if ($prev->exists())
+				{
+					$final['context']['previous'] = $prev->to_array();
+				}
+
+				if ($next->exists())
+				{
+					$final['context']['next'] = $next->to_array();
+				}
 			}
 		}
 

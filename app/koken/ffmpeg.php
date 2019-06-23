@@ -7,7 +7,7 @@ class FFmpeg {
 	var $duration = 0;
 	var $dimensions = 0;
 
-	function ffmpeg($path = false) {
+	function __construct($path = false) {
 		$this->path = $path;
 		$this->ffmpeg = FFMPEG_PATH_FINAL;
 	}

@@ -1020,7 +1020,7 @@
 						<div class="label"><label class="site_link_edit">Link</label></div>
 						<div class="value">
 							<textarea id="albums-link" rows="2" type="text" class="field side-col expand short" data-bind="value: sidebar.asset.url()" readonly="readonly"></textarea>
-							<span class="field-links"><!-- ko if: sidebar.asset.listed --><a href="#" class="edit-link" title="Edit URL slug">edit</a><!-- /ko --><a class="edit-link no-drawer copier" href="#" title="Copy URL to clipboard">copy</a><a class="edit-link no-drawer" data-bind="attr: { href: sidebar.asset.url() }" onclick="window.open(this.href); return false;" title="View asset in site">view</a><a data-event="reset_secret_link" class="edit-link no-drawer" href="#" title="Reset secret URL" data-bind="visible: sidebar.asset.visibility.raw() === 'unlisted'">reset</a></span>
+							<span class="field-links"><!-- ko if: sidebar.asset.visibility.raw() === 'public' --><a href="#" class="edit-link" title="Edit URL slug">edit</a><!-- /ko --><a class="edit-link no-drawer copier" href="#" title="Copy URL to clipboard">copy</a><a class="edit-link no-drawer" data-bind="attr: { href: sidebar.asset.url() }" onclick="window.open(this.href); return false;" title="View asset in site">view</a><a data-event="reset_secret_link" class="edit-link no-drawer" href="#" title="Reset secret URL" data-bind="visible: sidebar.asset.visibility.raw() === 'unlisted'">reset</a></span>
 						</div>
 					</div>
 					<!-- /ko -->
@@ -1099,7 +1099,7 @@
 	<div id="content_side" class="lib-col-content" data-bind="scrollbar: true">
 		<div id="content_evt">
 			<div data-event="sidebar">
-				<div class="col-block">
+				<div class="col-block" data-plugin-target="asset.properties">
 					<!-- Properties -->
 					<div data-event="toggle_visibility" class="col-head">
 						<span class="in">

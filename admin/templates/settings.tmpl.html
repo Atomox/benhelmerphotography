@@ -664,7 +664,7 @@
 				<div class="help-toggle">
 					<a class="toggle fright" title="More information about this setting" data-event="help">More info</a>
 					<div>
-						The permissions that the application is requestion. Applications with "read" permissions can only access your data, they cannot modify or delete anything. Applications with "read-write" permissions can create, modify or delete data and content.
+						The permissions that the application is requesting. Applications with "read" permissions can only access your data, they cannot modify or delete anything. Applications with "read-write" permissions can create, modify or delete data and content.
 					</div>
 				</div>
 				<div class="mid-wrap">
@@ -821,7 +821,7 @@
 						<input type="hidden" data-bind="value: $data.value || '', attr: { id: 'plugin-edit-' + key }" />
 						<!-- /ko -->
 						<!-- ko if: type === 'number' -->
-						<input type="number" class="field short" data-bind="value: $data.value, attr: { id: 'plugin-edit-' + key, min: $data.min, max: $data.max, step: $data.step }" />
+						<input type="number" class="field short" data-bind="value: $data.value, attr: { id: 'plugin-edit-' + key, min: $data.min, max: $data.max, step: $data.step }" /><!-- ko if: $data.suffix --> <span class="suffix" data-bind="text: $data.suffix"></span><!-- /ko -->
 						<!-- /ko -->
 
 						<!-- ko if: $data.validation -->
@@ -1433,11 +1433,14 @@
 				<div class="help-toggle">
 					<a class="toggle fright" title="More information about this setting" data-event="help">More info</a>
 					<div>
-					 	Koken caches all published images for speed and optimization. The "Clear image cache" button below is a troubleshooting utility for those experiencing image publishing issues. Clearing the image cache removes duplicated images only, not your original uploads.
+					 	Koken caches all published images for speed and optimization. The "Clear image cache" button below is a troubleshooting utility for those experiencing image publishing issues. Clearing the image cache removes duplicated images only, not your original uploads.<br>
+					 	<br>
+					 	The "Build image cache" button below will create in advance most of the images used on your site. This is a process intensive action and may take several minutes to complete.
 					</div>
 				</div>
 				<div class="mid-wrap">
 					<a href="#" data-event="clear_image_cache" class="button sm">Clear image cache</a>
+					<a href="#" data-event="build_image_cache" class="button sm">Build image cache</a>
 				</div>
 			</div>
 		</div>
@@ -1661,10 +1664,10 @@
 					<!-- ko ifnot: system.memory_limit -->
 					Not set
 					<!-- /ko -->
-					<!-- ko if: system.memory_limit && system.memory_limit.replace(/(M|G)$/, '') < 64 -->
+					<!-- ko if: system.memory_limit && system.memory_limit.replace(/M$/, '') < 64 -->
 					<span class="icon16 label-warn" data-bind="text: system.memory_limit + 'B (low)'"></span>
 					<!-- /ko -->
-					<!-- ko if: system.memory_limit && system.memory_limit.replace(/(M|G)$/, '') >= 64 -->
+					<!-- ko if: system.memory_limit && (system.memory_limit.replace(/M$/, '') >= 64 || system.memory_limit.indexOf('G') !== -1) -->
 					<span data-bind="text: system.memory_limit + 'B'"></span>
 					<!-- /ko -->
 				</div>

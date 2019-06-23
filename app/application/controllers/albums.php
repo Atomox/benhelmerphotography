@@ -66,6 +66,11 @@ class Albums extends Koken_Controller {
 			$params['order_by'] = 'left_id';
 		}
 
+		if ($params['order_by'] === 'filename')
+		{
+			$params['order_by'] = 'title';
+		}
+
 		$visibility_values = array('public', 'unlisted', 'private');
 		$visibility = array_search($params['visibility'], $visibility_values);
 

@@ -361,13 +361,24 @@ OUT;
 				$save = array();
 				foreach($_POST as $key => $val)
 				{
-					if (isset($data[$key]) && $data[$key] !== $val)
+					if (isset($data[$key]))
 					{
-						if ($key === 'retain_image_metadata' || ($key !== 'image_processing_library' && strpos($key, 'image_') === 0))
+						if (is_bool($data[$key]) && is_string($val) && ($val === 'true' || $val === 'false'))
 						{
-							delete_files( FCPATH . 'storage' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'images', true, 1 );
+							$save[$key] = $val;
+							$val = filter_var($val, FILTER_VALIDATE_BOOLEAN);
 						}
-						$save[$key] = $val;
+
+						if ($data[$key] !== $val)
+						{
+							if ($key === 'retain_image_metadata' || (strpos($key, 'image_processing_library') === 0 && strpos($key, 'image_') === 0))
+							{
+								delete_files( FCPATH . 'storage' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'images', true, 1 );
+							}
+							if (!isset($save[$key])) {
+								$save[$key] = $val;
+							}
+						}
 					}
 				}
 

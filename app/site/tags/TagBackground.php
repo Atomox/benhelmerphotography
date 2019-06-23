@@ -12,7 +12,8 @@
 				'data' => false,
 				'position' => 'focal',
 				'lazy' => false,
-				'fade' => true
+				'fade' => true,
+				'relative' => true,
 			);
 
 			$options = array_merge($defaults, $this->parameters);
@@ -46,6 +47,8 @@
 					$this->parameters['class'] = $klass;
 				}
 			}
+
+			$cache_path_prefix = $options['relative'] ? 'relative_prefix' : 'prefix';
 
 			$this->tag = $options['tag'];
 
@@ -106,7 +109,7 @@
 		if (\$__item):
 ?>
 
-<{$this->tag} $params data-aspect="<?php echo \$__item['aspect_ratio']; ?>" data-focal-point="<?php echo \$__item['focal_point']['x']; ?>,<?php echo \$__item['focal_point']['y']; ?>" data-bg-presets="<?php echo \$__presets; ?>" data-base="<?php echo \$__item['cache_path']['prefix']; ?>" data-extension="<?php echo \$__item['cache_path']['extension']; ?>">
+<{$this->tag} $params data-aspect="<?php echo \$__item['aspect_ratio']; ?>" data-focal-point="<?php echo \$__item['focal_point']['x']; ?>,<?php echo \$__item['focal_point']['y']; ?>" data-bg-presets="<?php echo \$__presets; ?>" data-base="<?php echo \$__item['cache_path']["{$cache_path_prefix}"]; ?>" data-extension="<?php echo \$__item['cache_path']['extension']; ?>">
 DOC;
 		}
 

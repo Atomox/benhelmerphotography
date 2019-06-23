@@ -50,7 +50,8 @@ class Trashes extends Koken_Controller {
 						$content = $c->where_in('id', $params['content'])->get_iterated();
 						foreach($content as $c)
 						{
-							$q[] = "('content-{$c->id}', '" . $this->db->escape_str(utf8_encode(serialize($c->to_array( array('auth' => $this->auth))))) . "', $now)";
+							$s = serialize($c->to_array( array('auth' => $this->auth)));
+							$q[] = "('content-{$c->id}', '" . $this->db->escape_str(MB_ENABLED ? mb_convert_encoding($s, 'UTF-8') : utf8_encode($s)) . "', $now)";
 						}
 					}
 
@@ -63,7 +64,8 @@ class Trashes extends Koken_Controller {
 
 							if ($al->exists())
 							{
-								$q[] = "('album-{$al->id}', '" . $this->db->escape_str(utf8_encode(serialize($al->to_array()))) . "', $now)";
+								$s = serialize($al->to_array());
+								$q[] = "('album-{$al->id}', '" . $this->db->escape_str(MB_ENABLED ? mb_convert_encoding($s, 'UTF-8') : utf8_encode($s)) . "', $now)";
 								$al->tree_trash();
 
 								foreach($al->categories->get_iterated() as $category)
@@ -222,7 +224,7 @@ class Trashes extends Koken_Controller {
 		$final['trash'] = array();
 		foreach($data as $member)
 		{
-			$content = unserialize(utf8_decode($member->data));
+			$content = unserialize(MB_ENABLED ? mb_convert_encoding($member->data, 'ISO-8859-1') : utf8_decode($member->data));
 			if (!$content)
 			{
 				$content = unserialize($member->data);

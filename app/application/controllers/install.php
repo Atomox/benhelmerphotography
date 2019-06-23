@@ -51,7 +51,7 @@ class Install extends CI_Controller {
 
 			foreach($info['fields'] as $name => &$attr)
 			{
-				if (in_array(strtolower($attr['type']), array('text', 'varchar', 'longtext')))
+				if (in_array(strtolower($attr['type']), array('text', 'varchar', 'longtext')) && $name !== 'id')
 				{
 					$attr['null'] = true;
 				}
@@ -131,7 +131,7 @@ class Install extends CI_Controller {
 			'image_xlarge_sharpening' => '0.3',
 			'image_huge_sharpening' => '0',
 			'last_upload' => 'false',
-			'last_migration' => '41',
+			'last_migration' => '42',
 			'has_toured' => false,
 			'email_handler' => 'DDI_Email',
 			'email_delivery_address' => $_POST['email'],

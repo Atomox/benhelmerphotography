@@ -22,6 +22,17 @@ class DarkroomImagick extends Darkroom {
 		}
 	}
 
+	public function getQuality()
+	{
+		$image = new Imagick();
+		$this->setLimits($image);
+
+		$image->readImage($this->sourcePath);
+		$quality = $image->getImageCompressionQuality();
+
+		return $quality;
+	}
+
 	public function rotate($path, $degrees)
 	{
 		$image = new Imagick();

@@ -18,7 +18,8 @@ class DDI_Email extends KokenPlugin implements KokenEmail {
 		$mailer = Swift_Mailer::newInstance($transport);
 
 		$message = Swift_Message::newInstance($subject)
-			->setFrom(array($fromEmail => $fromName))
+			->setFrom(array($toEmail))
+			->setReplyTo(array($fromEmail => $fromName))
 			->setTo(array($toEmail))
 			->setBody($message);
 

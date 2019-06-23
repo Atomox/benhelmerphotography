@@ -13,7 +13,8 @@
 				'respond_to' => 'width',
 				'size' => false,
 				'lazy' => false,
-				'fade' => true
+				'fade' => true,
+				'relative' => true,
 			);
 
 			$options = array_merge($defaults, $this->parameters);
@@ -109,6 +110,8 @@
 					$size = '';
 				}
 
+				$cache_path_prefix = $options['relative'] ? 'relative_prefix' : 'prefix';
+
 				$real_params = str_replace('alt=', 'data-alt=', $params);
 
 				return <<<DOC
@@ -149,7 +152,7 @@
 <noscript>
 	<img width="100%" $params src="<?php echo \$__item['presets']['large']['url']; ?>" />
 </noscript>
-<img $real_params data-visibility="<?php echo \$__item['visibility']['raw']; ?>" {$size}data-respond-to="{$options['respond_to']}" data-presets="<?php echo \$__presets; ?>" data-base="<?php echo \$__item['cache_path']['prefix']; ?>" data-extension="<?php echo \$__item['cache_path']['extension']; ?>"/>
+<img $real_params data-visibility="<?php echo \$__item['visibility']['raw']; ?>" {$size}data-respond-to="{$options['respond_to']}" data-presets="<?php echo \$__presets; ?>" data-base="<?php echo \$__item['cache_path']["{$cache_path_prefix}"]; ?>" data-extension="<?php echo \$__item['cache_path']['extension']; ?>"/>
 
 <?php } } ?>
 DOC;

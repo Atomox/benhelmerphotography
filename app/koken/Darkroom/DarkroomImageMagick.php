@@ -93,6 +93,27 @@ class DarkroomImageMagick extends Darkroom {
 		return $array;
 	}
 
+	public function getQuality()
+	{
+		$sourcePath = $this->sourcePath;
+
+		if ($this->isGmagick && strpos($sourcePath, 'https://') === 0) {
+			$sourcePath = str_replace('https://', 'http://', $sourcePath);
+		}
+
+		if ($this->isGmagick) {
+			$cmd = "gm identify -format '%[JPEG-Quality]' ";
+		}
+		else {
+			$cmd = "identify -format '%Q' ";
+		}
+
+		$cmd .= $sourcePath;
+
+		$quality = (int) shell_exec($cmd);
+		return $quality;
+	}
+
 	public function rotate($path, $degrees)
 	{
 		if ($this->isGmagick && strpos($path, 'https://') === 0) {
